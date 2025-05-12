@@ -1,4 +1,4 @@
-package com.ciscodeto.domain.entities.character
+package com.ciscodeto.domain.character
 
 import com.ciscodeto.domain.shared.Identifier
 import com.ciscodeto.domain.shared.Notification

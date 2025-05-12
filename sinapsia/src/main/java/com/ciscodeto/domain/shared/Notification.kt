@@ -1,7 +1,6 @@
 package com.ciscodeto.domain.shared
 
 class Notification {
-
     private val errors: MutableList<Error> = mutableListOf()
     fun addError(message: String, cause: Exception? = null) = errors.add(Error(message, cause))
     fun hasNoErrors() = errors.isEmpty()

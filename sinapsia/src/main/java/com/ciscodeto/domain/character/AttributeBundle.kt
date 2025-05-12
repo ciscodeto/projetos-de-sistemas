@@ -1,4 +1,4 @@
-package com.ciscodeto.domain.attributes
+package com.ciscodeto.domain.character
 
 import kotlin.reflect.KClass
 

@@ -1,9 +1,9 @@
 package com.ciscodeto.application.character.create
 
 import com.ciscodeto.application.character.create.CreateCharacter.*
-import com.ciscodeto.domain.entities.Attribute
-import com.ciscodeto.domain.entities.character.Character
-import com.ciscodeto.domain.entities.character.CharacterId
+import com.ciscodeto.domain.character.Attribute
+import com.ciscodeto.domain.character.Character
+import com.ciscodeto.domain.character.CharacterId
 import com.ciscodeto.application.character.repository.CharacterRepository
 import kotlin.uuid.ExperimentalUuidApi
 
@@ -19,15 +19,9 @@ class CreateCharacterImpl(
 
     @OptIn(ExperimentalUuidApi::class)
     override fun create(model: RequestModel): ResponseModel {
-        val totalSpent = model.attributes.sumOf { it.value } +
-                model.attributeModifier.sumOf { it.value }
-        require(totalSpent <= calculateAttributePointsPerLevel(model.level)) {
-            "Você deve gastar exatamente ${model.level} pontos de atributo, mas gastou $totalSpent."
-        }
 
         val health = calculateHealth(model.attributes)
         val energy = calculateEnergy(model.attributes)
-        val attributePoints = calculateAttributePointsPerLevel(model.level) - totalSpent
 
         val character = Character(
             id = CharacterId(),
@@ -39,7 +33,6 @@ class CreateCharacterImpl(
             health = health,
             energy = energy,
             attributes = model.attributes,
-            attributePoints = attributePoints,
             attributeModifier = model.attributeModifier,
             inventory = emptyList(),
             relationships = emptyMap()
@@ -60,9 +53,5 @@ class CreateCharacterImpl(
     private fun calculateEnergy(attrs: List<Attribute>): Int {
         val ene = (attrs.firstOrNull { it is Attribute.Energy } as? Attribute.Energy)?.value ?: 0
         return ene * ENERGY_PER_ENERGY + BASE_ENERGY
-    }
-
-    private fun calculateAttributePointsPerLevel(level: Int): Int {
-        return (level * 2) + 30
     }
 }

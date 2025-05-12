@@ -1,6 +1,4 @@
-package com.ciscodeto.domain.item
-
-import com.ciscodeto.domain.attributes.Attribute
+package com.ciscodeto.domain.character
 
 data class Item(
     val name: String,

@@ -1,4 +1,4 @@
-package com.ciscodeto.domain.attributes
+package com.ciscodeto.domain.character
 
 sealed class Attribute(open val value: Int) {
     data class Vitality(override val value: Int) : Attribute(value)
