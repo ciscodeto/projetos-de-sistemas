@@ -1,0 +1,68 @@
+package com.ciscodeto.application.character.create
+
+import com.ciscodeto.application.character.create.CreateCharacter.*
+import com.ciscodeto.domain.entities.Attribute
+import com.ciscodeto.domain.entities.character.Character
+import com.ciscodeto.domain.entities.character.CharacterId
+import com.ciscodeto.application.character.repository.CharacterRepository
+import kotlin.uuid.ExperimentalUuidApi
+
+class CreateCharacterImpl(
+    private val repository: CharacterRepository
+) : CreateCharacter {
+    companion object {
+        private const val HEALTH_PER_VITALITY = 10
+        private const val BASE_HEALTH = 50
+        private const val ENERGY_PER_ENERGY = 10
+        private const val BASE_ENERGY = 50
+    }
+
+    @OptIn(ExperimentalUuidApi::class)
+    override fun create(model: RequestModel): ResponseModel {
+        val totalSpent = model.attributes.sumOf { it.value } +
+                model.attributeModifier.sumOf { it.value }
+        require(totalSpent <= calculateAttributePointsPerLevel(model.level)) {
+            "Você deve gastar exatamente ${model.level} pontos de atributo, mas gastou $totalSpent."
+        }
+
+        val health = calculateHealth(model.attributes)
+        val energy = calculateEnergy(model.attributes)
+        val attributePoints = calculateAttributePointsPerLevel(model.level) - totalSpent
+
+        val character = Character(
+            id = CharacterId(),
+            name = model.name,
+            age = model.age,
+            level = model.level,
+            experience = model.experience,
+            gold = model.gold,
+            health = health,
+            energy = energy,
+            attributes = model.attributes,
+            attributePoints = attributePoints,
+            attributeModifier = model.attributeModifier,
+            inventory = emptyList(),
+            relationships = emptyMap()
+        )
+
+        repository.save(character)
+        return ResponseModel(
+            id = character.id.toString(),
+            name = character.name
+        )
+    }
+
+    private fun calculateHealth(attrs: List<Attribute>): Int {
+        val vit = (attrs.firstOrNull { it is Attribute.Vitality } as? Attribute.Vitality)?.value ?: 0
+        return vit * HEALTH_PER_VITALITY + BASE_HEALTH
+    }
+
+    private fun calculateEnergy(attrs: List<Attribute>): Int {
+        val ene = (attrs.firstOrNull { it is Attribute.Energy } as? Attribute.Energy)?.value ?: 0
+        return ene * ENERGY_PER_ENERGY + BASE_ENERGY
+    }
+
+    private fun calculateAttributePointsPerLevel(level: Int): Int {
+        return (level * 2) + 30
+    }
+}

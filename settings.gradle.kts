@@ -29,5 +29,5 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-include(":domain")
+include(":sinapsia")
 include(":persistence")

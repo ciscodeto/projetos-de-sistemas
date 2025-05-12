@@ -1,4 +1,4 @@
-package com.ciscodeto.domain.models
+package com.ciscodeto.domain.entities
 
 sealed class Attribute(open val value: Int) {
     data class Vitality(override val value: Int) : Attribute(value)
