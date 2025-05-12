@@ -22,6 +22,10 @@ class Character(
     var inventory: List<Item>,
     var relationships: Map<Character, String>,
 ) : Entity<Uuid>(id) {
+
+    init {
+
+    }
     fun levelUp() {
         level++
         attributePoints = calculateAttributePoints()
