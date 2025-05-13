@@ -38,7 +38,6 @@ class CreateCharacterImpl(
             relationships = emptyMap()
         )
 
-        repository.save(character)
         return ResponseModel(
             id = character.id.toString(),
             name = character.name

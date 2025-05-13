@@ -6,7 +6,7 @@ sealed class Attribute(open val value: Int) {
 
     data class Strength(override val value: Int) : Attribute(value)
     data class Endurance(override val value: Int) : Attribute(value)
-    data class Agility(override val value: Int) : Attribute(value)
+    data class Dexterity(override val value: Int) : Attribute(value)
 
     data class Intelligence(override val value: Int) : Attribute(value)
     data class Wisdom(override val value: Int) : Attribute(value)

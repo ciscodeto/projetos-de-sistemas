@@ -1,9 +1,12 @@
 package com.ciscodeto.domain.actions
 
+import com.ciscodeto.application.board.DiceRoller
+import com.ciscodeto.domain.character.Attribute
+import com.ciscodeto.domain.character.Character
 import com.ciscodeto.domain.shared.Entity
 
-data class ActionContext(
-    val actor: Entity,
-    val targets: List<Entity>,
-    val descriptors: List<Descriptor> = emptyList()
+class ActionContext(
+    val actor: Character,
+    val targets: List<Character>,
+    val diceRoller: DiceRoller
 )

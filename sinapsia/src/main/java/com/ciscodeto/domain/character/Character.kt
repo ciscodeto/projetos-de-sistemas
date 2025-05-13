@@ -1,5 +1,7 @@
 package com.ciscodeto.domain.character
 
+import com.ciscodeto.domain.actions.Action
+import com.ciscodeto.domain.actions.ActionResult
 import com.ciscodeto.domain.shared.Entity
 import com.ciscodeto.domain.shared.Notification
 import kotlin.uuid.ExperimentalUuidApi
@@ -32,6 +34,14 @@ class Character(
     fun levelUp() {
         level++
         attributePoints = calculateAttributePoints()
+    }
+
+    fun applyAttributeUpgrades(upgrades: List<Attribute>) {
+        val totalCost = upgrades.sumOf { it.value }
+
+        require(totalCost <= attributePoints) {
+            "Not enough attribute points. Required: $totalCost, Available: $attributePoints"
+        }
     }
 
     private fun validate() = Notification().also {
