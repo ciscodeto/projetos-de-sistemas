@@ -1,5 +1,5 @@
 package com.ciscodeto.domain.character
 
-enum class AttributeTypes {
+enum class AttributeType {
     VITALITY, ENERGY, STRENGTH, ENDURANCE, DEXTERITY, INTELLIGENCE, WISDOM, CHARISMA
 }

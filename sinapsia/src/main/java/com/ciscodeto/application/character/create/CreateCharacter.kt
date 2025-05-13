@@ -1,6 +1,6 @@
 package com.ciscodeto.application.character.create
 
-import com.ciscodeto.domain.character.Attribute
+import com.ciscodeto.domain.character.Attributes
 
 interface CreateCharacter {
     fun create(model: RequestModel): ResponseModel
@@ -13,8 +13,8 @@ interface CreateCharacter {
         val gold: Int,
         val health: Int,
         val energy: Int,
-        val attributes: List<Attribute>,
-        val attributeModifier: List<Attribute>,
+        val attributes: Attributes,
+        val attributeModifier: Attributes,
     )
 
     data class ResponseModel(

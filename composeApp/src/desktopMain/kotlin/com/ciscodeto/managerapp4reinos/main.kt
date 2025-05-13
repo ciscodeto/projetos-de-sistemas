@@ -6,7 +6,7 @@ import androidx.compose.ui.window.application
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = "ManagerApp4Reinos",
+        title = "4 Reinos - RPG Manager",
     ) {
         App()
     }

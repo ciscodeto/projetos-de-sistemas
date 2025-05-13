@@ -1,7 +1,8 @@
 package com.ciscodeto.domain.actions
 
-import com.ciscodeto.domain.character.Attribute
 import com.ciscodeto.domain.character.AttributeType
+import com.ciscodeto.domain.character.Attributes
+import com.ciscodeto.domain.character.Character
 
 interface Action {
     val name: String
@@ -17,5 +18,5 @@ interface Action {
      */
     val effectAttributes: List<AttributeType>
 
-    fun execute(context: ActionContext): ActionResult
+    fun execute(attributes: Attributes, target: Character): ActionResult
 }

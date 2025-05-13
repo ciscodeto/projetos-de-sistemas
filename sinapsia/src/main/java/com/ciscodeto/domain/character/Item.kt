@@ -4,5 +4,5 @@ data class Item(
     val name: String,
     val description: String,
     val price: Double,
-    val attributes: List<Attribute>,
+    val attributes: Attributes,
 )

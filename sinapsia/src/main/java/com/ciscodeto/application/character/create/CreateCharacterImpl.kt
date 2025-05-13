@@ -1,7 +1,7 @@
 package com.ciscodeto.application.character.create
 
 import com.ciscodeto.application.character.create.CreateCharacter.*
-import com.ciscodeto.domain.character.Attribute
+import com.ciscodeto.domain.character.Attributes
 import com.ciscodeto.domain.character.Character
 import com.ciscodeto.domain.character.CharacterId
 import com.ciscodeto.application.character.repository.CharacterRepository
@@ -44,13 +44,11 @@ class CreateCharacterImpl(
         )
     }
 
-    private fun calculateHealth(attrs: List<Attribute>): Int {
-        val vit = (attrs.firstOrNull { it is Attribute.Vitality } as? Attribute.Vitality)?.value ?: 0
-        return vit * HEALTH_PER_VITALITY + BASE_HEALTH
+    private fun calculateHealth(attrs: Attributes): Int {
+        return attrs.vitality * HEALTH_PER_VITALITY + BASE_HEALTH
     }
 
-    private fun calculateEnergy(attrs: List<Attribute>): Int {
-        val ene = (attrs.firstOrNull { it is Attribute.Energy } as? Attribute.Energy)?.value ?: 0
-        return ene * ENERGY_PER_ENERGY + BASE_ENERGY
+    private fun calculateEnergy(attrs: Attributes): Int {
+        return attrs.energy * ENERGY_PER_ENERGY + BASE_ENERGY
     }
 }

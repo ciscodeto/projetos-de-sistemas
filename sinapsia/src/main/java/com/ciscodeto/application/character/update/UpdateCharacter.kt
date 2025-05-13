@@ -1,6 +1,6 @@
 package com.ciscodeto.application.character.update
 
-import com.ciscodeto.domain.character.Attribute
+import com.ciscodeto.domain.character.Attributes
 import com.ciscodeto.domain.character.Item
 
 import com.ciscodeto.domain.character.Character
@@ -24,8 +24,8 @@ interface UpdateCharacter {
         val gold: Int,
         val health: Int,
         val energy: Int,
-        val attributes: List<Attribute>,
-        val attributeModifier: List<Attribute>,
+        val attributes: Attributes,
+        val attributeModifier: Attributes,
         val inventory: List<Item>,
         val relationships: Map<Character, String>,
     )
