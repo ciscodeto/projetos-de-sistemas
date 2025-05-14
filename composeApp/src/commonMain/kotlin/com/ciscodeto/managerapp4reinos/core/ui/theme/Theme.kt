@@ -1,6 +1,5 @@
 package com.ciscodeto.managerapp4reinos.core.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
@@ -249,7 +248,7 @@ val unspecified_scheme = ColorFamily(
 )
 
 @Composable
-fun AppTheme(
+fun ReinosAppTheme(
     darkTheme: Boolean = true,
     content: @Composable() () -> Unit
 ) {

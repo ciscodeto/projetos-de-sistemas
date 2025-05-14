@@ -8,10 +8,12 @@ kotlin {
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
+    jvm("desktop")
+
     androidLibrary {
         namespace = "com.ciscodeto.sinapsia"
         compileSdk = 35
-        minSdk = 26
+        minSdk = 24
 
         withHostTestBuilder {
         }
