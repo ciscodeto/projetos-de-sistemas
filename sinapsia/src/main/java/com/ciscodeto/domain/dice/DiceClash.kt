@@ -5,12 +5,12 @@ import com.ciscodeto.domain.actions.ActionResult
 import com.ciscodeto.domain.character.Character
 
 class DiceClash(
-    val actor: Character,
-    val action: Action,
-    val target: Character,
+    private val actor: Character,
+    private val action: Action,
+    private val target: Character,
 ) {
-    lateinit var actorResult: ActionResult
-    lateinit var counterResult: ActionResult
+    private lateinit var actorResult: ActionResult
+    private lateinit var counterResult: ActionResult
 
     fun executeInitial(): List<Action> {
         actorResult = actor.executeAction(action, target)
@@ -22,7 +22,31 @@ class DiceClash(
         return true
     }
 
-    fun resolve(): CombatResult {
+    fun resolve(): ClashOutcome {
+        val effectApplied = when {
+            !actorResult.success -> false
+            counterResult == null -> true
+            counterResult.finalValue < actorResult.finalValue -> true
+            else -> false
+        }
 
+        val message = when {
+            !actorResult.success -> "${actor.name} falhou em executar ${action.name}."
+            counterResult == null -> "${actor.name} executou ${action.name} com sucesso contra ${target.name}."
+            !counterResult!!.success -> "${target.name} falhou ao responder. ${actor.name} acertou ${action.name}!"
+            !effectApplied -> "${target.name} defendeu com sucesso a ação ${action.name}!"
+            else -> "${actor.name} superou a defesa de ${target.name} com ${action.name}!"
+        }
+
+        return ClashOutcome(
+            actor = actor,
+            target = target,
+            action = action,
+            actorResult = actorResult,
+            counterResult = counterResult,
+            counterAction = null,
+            effectApplied = effectApplied,
+            finalMessage = message
+        )
     }
 }
