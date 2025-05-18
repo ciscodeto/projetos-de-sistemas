@@ -1,6 +1,6 @@
 package com.ciscodeto.application.character.find
 
-import com.ciscodeto.application.character.repository.CharacterRepository
+import com.ciscodeto.sinapsia.application.character.repository.CharacterRepository
 import com.ciscodeto.domain.character.Character
 
 class FindCharacterImpl(

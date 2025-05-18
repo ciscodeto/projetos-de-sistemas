@@ -1,7 +1,7 @@
 package com.ciscodeto.domain.actions
 
 import com.ciscodeto.domain.character.AttributeType
-import com.ciscodeto.domain.character.Attributes
+import com.ciscodeto.sinapsia.domain.character.Attributes
 import com.ciscodeto.domain.character.Character
 
 interface Action {

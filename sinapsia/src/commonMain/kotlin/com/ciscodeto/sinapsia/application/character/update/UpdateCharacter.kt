@@ -1,6 +1,6 @@
 package com.ciscodeto.application.character.update
 
-import com.ciscodeto.domain.character.Attributes
+import com.ciscodeto.sinapsia.domain.character.Attributes
 import com.ciscodeto.domain.character.Item
 
 import com.ciscodeto.domain.character.Character

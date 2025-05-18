@@ -1,7 +1,7 @@
 package com.ciscodeto.application.character.delete
 
 import com.ciscodeto.application.character.delete.DeleteCharacter.*
-import com.ciscodeto.application.character.repository.CharacterRepository
+import com.ciscodeto.sinapsia.application.character.repository.CharacterRepository
 
 class DeleteCharacterImpl(
     private val repository: CharacterRepository

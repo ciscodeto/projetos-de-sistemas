@@ -1,6 +1,6 @@
 package com.ciscodeto.application.character.create
 
-import com.ciscodeto.domain.character.Attributes
+import com.ciscodeto.sinapsia.domain.character.Attributes
 
 interface CreateCharacter {
     fun create(model: RequestModel): ResponseModel

@@ -1,6 +1,6 @@
 package com.ciscodeto.application.character.update
 
-import com.ciscodeto.application.character.repository.CharacterRepository
+import com.ciscodeto.sinapsia.application.character.repository.CharacterRepository
 import com.ciscodeto.application.character.update.UpdateCharacter.*
 
 class UpdateCharacterImpl(

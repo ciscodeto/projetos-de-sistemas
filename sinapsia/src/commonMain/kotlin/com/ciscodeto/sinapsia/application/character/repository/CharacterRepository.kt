@@ -1,4 +1,4 @@
-package com.ciscodeto.application.character.repository
+package com.ciscodeto.sinapsia.application.character.repository
 
 import com.ciscodeto.domain.character.Character
 
