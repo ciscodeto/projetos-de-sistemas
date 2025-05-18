@@ -1,4 +1,4 @@
-package com.ciscodeto.managerapp4reinos.character.presentation
+package com.ciscodeto.app4reinos.character.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.ciscodeto.managerapp4reinos.character.presentation.components.CharacterListElement
-import com.ciscodeto.managerapp4reinos.core.components.bar.ReinosAppBar
+import com.ciscodeto.app4reinos.character.presentation.components.CharacterListElement
+import com.ciscodeto.app4reinos.core.components.bar.ReinosAppBar
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

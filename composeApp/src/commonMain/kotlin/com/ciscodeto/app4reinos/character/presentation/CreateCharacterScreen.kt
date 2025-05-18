@@ -1,4 +1,4 @@
-package com.ciscodeto.managerapp4reinos.character.presentation
+package com.ciscodeto.app4reinos.character.presentation
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
