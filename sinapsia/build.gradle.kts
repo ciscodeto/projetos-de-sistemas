@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 kotlin {
@@ -61,6 +64,10 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
+                implementation(libs.koin.core)
+                implementation(libs.room.gradle.plugin)
+                implementation(libs.room.runtime)
+                implementation(libs.sqlite.bundled)
                 // Add KMP dependencies here
             }
         }
@@ -97,5 +104,13 @@ kotlin {
             }
         }
     }
+}
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
+
+dependencies {
+    ksp(libs.room.compiler)
 }
