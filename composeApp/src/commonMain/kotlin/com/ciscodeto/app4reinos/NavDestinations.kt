@@ -1,4 +1,4 @@
-package com.ciscodeto.managerapp4reinos
+package com.ciscodeto.app4reinos
 
 import kotlinx.serialization.Serializable
 

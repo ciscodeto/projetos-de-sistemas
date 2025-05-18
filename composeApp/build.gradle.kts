@@ -44,11 +44,16 @@ kotlin {
             implementation(compose.material)
             implementation(compose.material3)
             implementation(compose.ui)
+            implementation(compose.materialIconsExtended)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.navigation.compose)
+            implementation(compose.components.resources)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.compose.viewmodel.navigation)
             implementation(project(":sinapsia"))
         }
         desktopMain.dependencies {
@@ -59,7 +64,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.ciscodeto.managerapp4reinos"
+    namespace = "com.ciscodeto.app4reinos"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

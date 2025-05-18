@@ -1,4 +1,4 @@
-package com.ciscodeto.managerapp4reinos
+package com.ciscodeto.app4reinos
 
 class JVMPlatform: Platform {
     override val name: String = "Java ${System.getProperty("java.version")}"

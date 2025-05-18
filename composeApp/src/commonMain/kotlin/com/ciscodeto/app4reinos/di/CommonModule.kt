@@ -1,11 +1,19 @@
-package com.ciscodeto.managerapp4reinos.di
+package com.ciscodeto.app4reinos.di
 
-import com.ciscodeto.managerapp4reinos.character.presentation.CharactersListViewModel
-import com.ciscodeto.managerapp4reinos.character.presentation.CreateCharacterViewModel
+import androidx.room.Room
+import com.ciscodeto.app4reinos.character.presentation.CharactersListViewModel
+import com.ciscodeto.app4reinos.character.presentation.CreateCharacterViewModel
+import com.ciscodeto.sinapsia.application.character.find.FindAllCharactersImpl
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val commonModule = module {
+//val serviceModule = module {
+//    single {
+//        FindAllCharactersImpl(get())
+//    }
+//}
+
+val viewModelModule = module {
     viewModel {
         CharactersListViewModel()
     }

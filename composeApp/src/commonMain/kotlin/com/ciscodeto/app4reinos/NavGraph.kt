@@ -1,4 +1,4 @@
-package com.ciscodeto.managerapp4reinos
+package com.ciscodeto.app4reinos
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,14 +7,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.ciscodeto.managerapp4reinos.NavDestinations.*
-import com.ciscodeto.managerapp4reinos.character.presentation.CharactersListScreen
-import com.ciscodeto.managerapp4reinos.character.presentation.CreateCharacterScreen
-import com.ciscodeto.managerapp4reinos.home.HomeScreen
+import com.ciscodeto.app4reinos.NavDestinations.*
+import com.ciscodeto.app4reinos.character.presentation.CharactersListScreen
+import com.ciscodeto.app4reinos.character.presentation.CreateCharacterScreen
+import com.ciscodeto.app4reinos.home.HomeScreen
 
 @Composable
 fun NavGraph(

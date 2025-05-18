@@ -1,3 +1,3 @@
-package com.ciscodeto.managerapp4reinos.di
+package com.ciscodeto.app4reinos.di
 
-fun appModules() = listOf(commonModule)
+fun appModules() = listOf(viewModelModule)

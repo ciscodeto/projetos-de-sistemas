@@ -1,4 +1,4 @@
-package com.ciscodeto.managerapp4reinos
+package com.ciscodeto.app4reinos
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
