@@ -1,6 +1,6 @@
 package com.ciscodeto.sinapsia.application.character.repository
 
-import com.ciscodeto.domain.character.CharacterId
+import com.ciscodeto.sinapsia.domain.character.CharacterId
 import com.ciscodeto.sinapsia.domain.character.Character
 import kotlin.uuid.ExperimentalUuidApi
 

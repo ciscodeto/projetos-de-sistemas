@@ -2,10 +2,9 @@ package com.ciscodeto.sinapsia.domain.character
 
 import com.ciscodeto.domain.actions.Action
 import com.ciscodeto.domain.actions.ActionResult
-import com.ciscodeto.domain.character.CharacterId
 import com.ciscodeto.domain.character.Item
 import com.ciscodeto.domain.shared.Entity
-import com.ciscodeto.domain.shared.Notification
+import com.ciscodeto.sinapsia.domain.shared.Notification
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 

@@ -3,7 +3,7 @@ package com.ciscodeto.application.character.create
 import com.ciscodeto.application.character.create.CreateCharacter.*
 import com.ciscodeto.sinapsia.domain.character.Attributes
 import com.ciscodeto.sinapsia.domain.character.Character
-import com.ciscodeto.domain.character.CharacterId
+import com.ciscodeto.sinapsia.domain.character.CharacterId
 import com.ciscodeto.sinapsia.application.character.repository.CharacterRepository
 import kotlin.uuid.ExperimentalUuidApi
 

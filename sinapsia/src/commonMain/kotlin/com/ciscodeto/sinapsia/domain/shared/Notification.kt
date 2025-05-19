@@ -1,4 +1,4 @@
-package com.ciscodeto.domain.shared
+package com.ciscodeto.sinapsia.domain.shared
 
 class Notification {
     private val errors: MutableList<Error> = mutableListOf()

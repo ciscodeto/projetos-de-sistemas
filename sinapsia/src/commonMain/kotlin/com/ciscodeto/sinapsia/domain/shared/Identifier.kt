@@ -1,4 +1,4 @@
-package com.ciscodeto.domain.shared
+package com.ciscodeto.sinapsia.domain.shared
 
 interface Identifier <T>{
     fun validate() : Notification

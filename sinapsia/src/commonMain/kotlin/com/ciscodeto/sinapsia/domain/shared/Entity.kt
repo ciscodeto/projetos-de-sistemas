@@ -1,5 +1,7 @@
 package com.ciscodeto.domain.shared
 
+import com.ciscodeto.sinapsia.domain.shared.Identifier
+
 abstract class Entity <T> (val id: Identifier<T>) {
 
     final override fun equals(other: Any?) = when {

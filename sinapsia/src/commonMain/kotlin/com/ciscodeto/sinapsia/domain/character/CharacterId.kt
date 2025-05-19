@@ -1,7 +1,7 @@
-package com.ciscodeto.domain.character
+package com.ciscodeto.sinapsia.domain.character
 
-import com.ciscodeto.domain.shared.Identifier
-import com.ciscodeto.domain.shared.Notification
+import com.ciscodeto.sinapsia.domain.shared.Identifier
+import com.ciscodeto.sinapsia.domain.shared.Notification
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
