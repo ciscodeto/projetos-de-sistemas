@@ -1,13 +1,16 @@
 package com.ciscodeto.sinapsia.di
 
-import androidx.room.Room
+import android.content.Context
 import androidx.room.RoomDatabase
 import com.ciscodeto.sinapsia.infrastructure.SinapsiaDatabase
 import com.ciscodeto.sinapsia.infrastructure.getAndroidDatabaseBuilder
-import com.ciscodeto.sinapsia.infrastructure.getDatabaseBuilder
-import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module
+
+private lateinit var appContext: Context
+
+fun initSinapsiaDatabase(context: Context) {
+    appContext = context.applicationContext
+}
 
 actual fun getDatabaseBuilder(): RoomDatabase.Builder<SinapsiaDatabase> {
-    return getAndroidDatabaseBuilder()
+    return getAndroidDatabaseBuilder(appContext)
 }
