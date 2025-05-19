@@ -12,10 +12,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.ciscodeto.app4reinos.NavDestinations.CharactersListScreen
+import com.ciscodeto.app4reinos.NavDestinations
+import com.ciscodeto.app4reinos.NavDestinations.*
 import com.ciscodeto.app4reinos.core.components.bar.ReinosAppBar
 import com.ciscodeto.app4reinos.core.components.buttons.GoldOutlinedButton
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+fun buttons() = mapOf(
+    CharactersListScreen to "PERSONAGENS",
+    ItemsListScreen to "ITENS"
+)
 
 @Composable
 @Preview
@@ -31,11 +37,11 @@ fun HomeScreen(navController: NavHostController) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val options = listOf(CharactersListScreen)
+            val options = buttons()
             options.forEach { label ->
                 GoldOutlinedButton(
-                    text = label::class.simpleName.toString(),
-                    onClick = { navController.navigate(label) },
+                    text = label.value,
+                    onClick = { navController.navigate(label.key) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp)

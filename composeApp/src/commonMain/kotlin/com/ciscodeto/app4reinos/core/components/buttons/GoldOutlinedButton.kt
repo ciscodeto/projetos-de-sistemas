@@ -1,6 +1,7 @@
 package com.ciscodeto.app4reinos.core.components.buttons
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -30,8 +31,8 @@ fun GoldOutlinedButton(
             contentColor = MaterialTheme.colorScheme.primaryContainer
         ),
         shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(2.dp, Brush.verticalGradient(
-            listOf(MaterialTheme.colorScheme.outline, Color(0xFFEBE2C6))
+        border = BorderStroke(1.dp, Brush.verticalGradient(
+            listOf(MaterialTheme.colorScheme.outline, MaterialTheme.colorScheme.outlineVariant)
         )),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)
     ) {

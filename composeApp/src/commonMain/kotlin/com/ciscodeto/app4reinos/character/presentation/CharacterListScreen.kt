@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -38,14 +39,13 @@ fun CharactersListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* Ação de adicionar personagem */ },
-                containerColor = Color(0xFFD8C0A7),
+                onClick = { navController.navigate(CreateCharacterScreen("Help")) },
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = Color.Black
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add Character")
             }
         },
-        containerColor = Color(0xFF1C120D)
     ) { paddingValues ->
         LazyColumn(
             contentPadding = paddingValues,

@@ -1,5 +1,6 @@
 package com.ciscodeto.app4reinos.di
 
+import com.ciscodeto.app4reinos.character.presentation.CharacterDetailViewModel
 import com.ciscodeto.app4reinos.character.presentation.CharactersListViewModel
 import com.ciscodeto.app4reinos.character.presentation.CreateCharacterViewModel
 import com.ciscodeto.sinapsia.application.character.find.FindAllCharacters
@@ -15,6 +16,9 @@ val servicesModule = module {
 }
 
 val viewModelModule = module {
+    viewModel {
+        CharacterDetailViewModel()
+    }
     viewModel {
         CharactersListViewModel(get())
     }

@@ -1,4 +1,7 @@
 package com.ciscodeto.app4reinos.character.presentation
 
-class CharacterDetailViewModel {
+import androidx.lifecycle.ViewModel
+
+class CharacterDetailViewModel : ViewModel() {
+
 }

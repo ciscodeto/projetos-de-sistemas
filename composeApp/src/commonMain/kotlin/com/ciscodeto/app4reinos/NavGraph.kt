@@ -42,10 +42,13 @@ fun NavGraph(
             }
             composable<CharacterDetailScreen> {
                 val args = it.toRoute<CharacterDetailScreen>()
-                CharacterDetailsScreen(args.characterId)
+                CharacterDetailsScreen(
+                    args.characterId,
+                    navController = navController
+                )
             }
             composable<CreateCharacterScreen> {
-                CreateCharacterScreen()
+                CreateCharacterScreen(navController)
             }
         }
     }
