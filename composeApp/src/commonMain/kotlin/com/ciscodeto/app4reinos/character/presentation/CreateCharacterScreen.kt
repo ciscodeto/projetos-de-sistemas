@@ -37,6 +37,8 @@ fun CreateCharacterScreen(
     val viewModel = koinViewModel<CreateCharacterViewModel>()
     val scrollState = rememberScrollState()
 
+    CreateCharacter
+
     Scaffold(
         topBar = {
             ReinosAppBar(

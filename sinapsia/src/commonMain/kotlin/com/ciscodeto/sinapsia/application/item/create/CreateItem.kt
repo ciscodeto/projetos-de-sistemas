@@ -1,4 +1,4 @@
-package com.ciscodeto.application.item.create
+package com.ciscodeto.sinapsia.application.item.create
 
 interface CreateItem {
 }

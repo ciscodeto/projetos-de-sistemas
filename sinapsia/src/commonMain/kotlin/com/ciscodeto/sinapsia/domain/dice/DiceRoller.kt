@@ -1,4 +1,4 @@
-package com.ciscodeto.domain.dice
+package com.ciscodeto.sinapsia.domain.dice
 
 class DiceRoller() {
 }

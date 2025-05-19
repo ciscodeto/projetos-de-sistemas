@@ -1,4 +1,4 @@
-package com.ciscodeto.application.item.find
+package com.ciscodeto.sinapsia.application.item.find
 
 interface FindItem {
 }

@@ -1,7 +1,7 @@
-package com.ciscodeto.domain.dice
+package com.ciscodeto.sinapsia.domain.dice
 
-import com.ciscodeto.domain.actions.Action
-import com.ciscodeto.domain.actions.ActionResult
+import com.ciscodeto.sinapsia.domain.actions.Action
+import com.ciscodeto.sinapsia.domain.actions.ActionResult
 import com.ciscodeto.sinapsia.domain.character.Character
 
 class DiceClash(

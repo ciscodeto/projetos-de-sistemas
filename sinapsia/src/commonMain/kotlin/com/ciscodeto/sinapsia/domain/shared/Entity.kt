@@ -1,4 +1,4 @@
-package com.ciscodeto.domain.shared
+package com.ciscodeto.sinapsia.domain.shared
 
 import com.ciscodeto.sinapsia.domain.shared.Identifier
 

@@ -1,4 +1,4 @@
-package com.ciscodeto.domain.character
+package com.ciscodeto.sinapsia.domain.character
 
 import com.ciscodeto.sinapsia.domain.character.Attributes
 

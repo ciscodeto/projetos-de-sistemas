@@ -1,6 +1,6 @@
-package com.ciscodeto.application.character.create
+package com.ciscodeto.sinapsia.application.character.create
 
-import com.ciscodeto.application.character.create.CreateCharacter.*
+import com.ciscodeto.sinapsia.application.character.create.CreateCharacter.*
 import com.ciscodeto.sinapsia.domain.character.Attributes
 import com.ciscodeto.sinapsia.domain.character.Character
 import com.ciscodeto.sinapsia.domain.character.CharacterId

@@ -1,4 +1,4 @@
-package com.ciscodeto.application.character.delete
+package com.ciscodeto.sinapsia.application.character.delete
 
 import com.ciscodeto.sinapsia.application.character.delete.DeleteCharacter
 import com.ciscodeto.sinapsia.application.character.delete.DeleteCharacter.*

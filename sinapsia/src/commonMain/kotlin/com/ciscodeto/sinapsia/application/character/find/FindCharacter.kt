@@ -1,4 +1,4 @@
-package com.ciscodeto.application.character.find
+package com.ciscodeto.sinapsia.application.character.find
 
 import com.ciscodeto.sinapsia.domain.character.Character
 import kotlin.uuid.ExperimentalUuidApi

@@ -1,4 +1,6 @@
-package com.ciscodeto.domain.actions
+package com.ciscodeto.sinapsia.domain.actions
+
+import com.ciscodeto.sinapsia.domain.actions.Action
 
 data class ActionResult(
     val success: Boolean,

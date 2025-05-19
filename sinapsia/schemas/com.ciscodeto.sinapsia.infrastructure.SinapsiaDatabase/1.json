@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0e0ebd60065479b52bba058864508520",
+    "identityHash": "c2baaabcd99011563aa17be1a31a1bd7",
     "entities": [
       {
         "tableName": "characters",
@@ -131,13 +131,13 @@
         }
       },
       {
-        "tableName": "ItemEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `ownerId` TEXT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `price` INTEGER NOT NULL, `vitality` INTEGER NOT NULL, `energy` INTEGER NOT NULL, `strength` INTEGER NOT NULL, `dexterity` INTEGER NOT NULL, `endurance` INTEGER NOT NULL, `intelligence` INTEGER NOT NULL, `wisdom` INTEGER NOT NULL, `charisma` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "items",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `ownerId` TEXT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `price` INTEGER NOT NULL, `vitality` INTEGER NOT NULL, `energy` INTEGER NOT NULL, `strength` INTEGER NOT NULL, `dexterity` INTEGER NOT NULL, `endurance` INTEGER NOT NULL, `intelligence` INTEGER NOT NULL, `wisdom` INTEGER NOT NULL, `charisma` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "TEXT",
+            "affinity": "BLOB",
             "notNull": true
           },
           {
@@ -223,7 +223,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0e0ebd60065479b52bba058864508520')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c2baaabcd99011563aa17be1a31a1bd7')"
     ]
   }
 }

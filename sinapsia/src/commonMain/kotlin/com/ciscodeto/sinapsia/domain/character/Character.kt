@@ -1,7 +1,7 @@
 package com.ciscodeto.sinapsia.domain.character
 
-import com.ciscodeto.domain.actions.Action
-import com.ciscodeto.domain.actions.ActionResult
+import com.ciscodeto.sinapsia.domain.actions.Action
+import com.ciscodeto.sinapsia.domain.actions.ActionResult
 import com.ciscodeto.domain.character.Item
 import com.ciscodeto.domain.shared.Entity
 import com.ciscodeto.sinapsia.domain.shared.Notification
