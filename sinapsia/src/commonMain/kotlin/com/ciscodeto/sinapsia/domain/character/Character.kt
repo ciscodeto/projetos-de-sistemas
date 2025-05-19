@@ -1,10 +1,11 @@
-package com.ciscodeto.domain.character
+package com.ciscodeto.sinapsia.domain.character
 
 import com.ciscodeto.domain.actions.Action
 import com.ciscodeto.domain.actions.ActionResult
+import com.ciscodeto.domain.character.CharacterId
+import com.ciscodeto.domain.character.Item
 import com.ciscodeto.domain.shared.Entity
 import com.ciscodeto.domain.shared.Notification
-import com.ciscodeto.sinapsia.domain.character.Attributes
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -12,16 +13,16 @@ import kotlin.uuid.Uuid
 class Character(
     id: CharacterId,
     val name: String,
+    val description: String,
     val age: Int,
     var level: Int,
     var experience: Int,
     var gold: Int,
     var health: Int,
-    var energy: Int,
+    var stamina: Int,
     var attributes: Attributes,
-    var attributeModifier: Attributes,
-    var inventory: List<Item>,
-    var relationships: Map<Character, String>,
+    var attributeModifier: Attributes?,
+    var inventory: List<Item> = emptyList(),
 ) : Entity<Uuid>(id) {
     private var attributePoints: Int
 

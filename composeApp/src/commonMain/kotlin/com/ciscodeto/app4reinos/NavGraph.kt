@@ -10,9 +10,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.ciscodeto.app4reinos.NavDestinations.*
 import com.ciscodeto.app4reinos.character.presentation.CharactersListScreen
 import com.ciscodeto.app4reinos.character.presentation.CreateCharacterScreen
+import com.ciscodeto.app4reinos.character.presentation.CharacterDetailsScreen
 import com.ciscodeto.app4reinos.home.HomeScreen
 
 @Composable
@@ -37,6 +39,10 @@ fun NavGraph(
             }
             composable<CharactersListScreen> {
                 CharactersListScreen(navController)
+            }
+            composable<CharacterDetailScreen> {
+                val args = it.toRoute<CharacterDetailScreen>()
+                CharacterDetailsScreen(args.characterId)
             }
             composable<CreateCharacterScreen> {
                 CreateCharacterScreen()

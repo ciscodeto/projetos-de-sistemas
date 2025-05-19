@@ -1,12 +1,15 @@
 package com.ciscodeto.sinapsia.application.character.repository
 
-import com.ciscodeto.domain.character.Character
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 interface CharacterRepository {
-    fun save(model: Character)
-    fun update(model: Character)
-    fun delete(id: String)
-    fun findAll(): List<Character>
-    fun findAllByName(name: String): List<Character>
-    fun findById(id: String): Character?
+    suspend fun save(model: CharacterDto)
+    suspend fun update(model: CharacterDto)
+    @OptIn(ExperimentalUuidApi::class)
+    suspend fun delete(id: Uuid)
+    suspend fun findAll(): List<CharacterDto>
+    suspend fun findAllByName(name: String): List<CharacterDto>
+    @OptIn(ExperimentalUuidApi::class)
+    suspend fun findById(id: Uuid): CharacterDto?
 }

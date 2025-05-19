@@ -1,21 +1,23 @@
-package com.ciscodeto.application.character.update
+package com.ciscodeto.sinapsia.application.character.update
 
 import com.ciscodeto.sinapsia.domain.character.Attributes
 import com.ciscodeto.domain.character.Item
 
-import com.ciscodeto.domain.character.Character
+import com.ciscodeto.sinapsia.domain.character.Character
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 interface UpdateCharacter {
-    fun update(character: RequestModel) : ResponseModel
+    suspend fun update(character: RequestModel) : ResponseModel
 
     data class ResponseModel(
         val id: String,
         val name: String,
         val description: String,
     )
-
+    @OptIn(ExperimentalUuidApi::class)
     data class RequestModel(
-        val id: String,
+        val id: Uuid,
         val name: String,
         val description: String,
         val age: Int,
@@ -23,10 +25,7 @@ interface UpdateCharacter {
         val experience: Int,
         val gold: Int,
         val health: Int,
-        val energy: Int,
+        val stamina: Int,
         val attributes: Attributes,
-        val attributeModifier: Attributes,
-        val inventory: List<Item>,
-        val relationships: Map<Character, String>,
     )
 }

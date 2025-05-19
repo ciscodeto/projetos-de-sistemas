@@ -2,7 +2,7 @@ package com.ciscodeto.domain.actions
 
 import com.ciscodeto.domain.character.AttributeType
 import com.ciscodeto.sinapsia.domain.character.Attributes
-import com.ciscodeto.domain.character.Character
+import com.ciscodeto.sinapsia.domain.character.Character
 
 class CompositeAction(
     override val name: String,

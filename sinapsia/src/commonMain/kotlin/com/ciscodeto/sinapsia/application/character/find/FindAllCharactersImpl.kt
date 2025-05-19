@@ -1,13 +1,14 @@
 package com.ciscodeto.sinapsia.application.character.find
 
+import com.ciscodeto.sinapsia.application.character.repository.CharacterDto
 import com.ciscodeto.sinapsia.application.character.repository.CharacterRepository
-import com.ciscodeto.domain.character.Character
-import com.ciscodeto.sinapsia.application.character.find.FindAllCharacters
+import com.ciscodeto.sinapsia.application.character.repository.toDomain
+import com.ciscodeto.sinapsia.domain.character.Character
 
 class FindAllCharactersImpl(
     private val repository: CharacterRepository
 ) : FindAllCharacters {
-    override fun findAll(): List<Character> {
-        return repository.findAll()
+    override suspend fun findAll(): List<Character> {
+        return repository.findAll().map{ it.toDomain() }
     }
 }

@@ -13,7 +13,6 @@ import org.koin.compose.KoinApplication
 @Preview
 fun App() {
     val navController = rememberNavController()
-    Sinapsia.start(this)
 
     KoinApplication(
         application = { modules(appModules()) }

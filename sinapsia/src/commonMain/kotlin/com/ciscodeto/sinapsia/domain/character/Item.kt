@@ -5,6 +5,6 @@ import com.ciscodeto.sinapsia.domain.character.Attributes
 data class Item(
     val name: String,
     val description: String,
-    val price: Double,
+    val price: Int,
     val attributes: Attributes,
 )

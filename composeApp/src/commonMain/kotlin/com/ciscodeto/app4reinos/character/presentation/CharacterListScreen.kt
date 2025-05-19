@@ -15,21 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.ciscodeto.app4reinos.NavDestinations
+import com.ciscodeto.app4reinos.NavDestinations.*
 import com.ciscodeto.app4reinos.character.presentation.components.CharacterListElement
 import com.ciscodeto.app4reinos.core.components.bar.ReinosAppBar
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun CharactersListScreen(navController: NavController) {
-    val viewModel = koinViewModel<CharactersListViewModel>()
-
-    val mockCharacters = listOf(
-        Character(name = "Elandor", level = 12),
-        Character(name = "Myriam", level = 25),
-        Character(name = "Thorgar", level = 8),
-        Character(name = "Selene", level = 19),
-        Character(name = "Kaelen", level = 30)
-    )
+fun CharactersListScreen(
+    navController: NavController,
+    viewModel: CharactersListViewModel = koinViewModel()
+) {
+    val characters = viewModel.characters.value
 
     Scaffold(
         topBar = {
@@ -57,13 +54,13 @@ fun CharactersListScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            items(mockCharacters) { character ->
+            items(characters) { character ->
                 CharacterListElement(
                     name = character.name,
                     level = character.level,
-                    onClick = {
-                        // Navegar para a tela de detalhes
-                    }
+                    onClick = { navController
+                        .navigate(CharacterDetailScreen(character.id)
+                    ) }
                 )
             }
         }
@@ -72,5 +69,6 @@ fun CharactersListScreen(navController: NavController) {
 
 data class Character(
     val name: String,
-    val level: Int
+    val level: Int,
+    val id: String,
 )

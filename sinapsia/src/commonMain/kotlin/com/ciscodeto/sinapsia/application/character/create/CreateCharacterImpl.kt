@@ -2,7 +2,7 @@ package com.ciscodeto.application.character.create
 
 import com.ciscodeto.application.character.create.CreateCharacter.*
 import com.ciscodeto.sinapsia.domain.character.Attributes
-import com.ciscodeto.domain.character.Character
+import com.ciscodeto.sinapsia.domain.character.Character
 import com.ciscodeto.domain.character.CharacterId
 import com.ciscodeto.sinapsia.application.character.repository.CharacterRepository
 import kotlin.uuid.ExperimentalUuidApi
@@ -18,10 +18,10 @@ class CreateCharacterImpl(
     }
 
     @OptIn(ExperimentalUuidApi::class)
-    override fun create(model: RequestModel): ResponseModel {
+    override suspend fun create(model: RequestModel): ResponseModel {
 
         val health = calculateHealth(model.attributes)
-        val energy = calculateEnergy(model.attributes)
+        val stamina = calculateStamina(model.attributes)
 
         val character = Character(
             id = CharacterId(),
@@ -31,11 +31,11 @@ class CreateCharacterImpl(
             experience = model.experience,
             gold = model.gold,
             health = health,
-            energy = energy,
+            stamina = stamina,
             attributes = model.attributes,
             attributeModifier = model.attributeModifier,
             inventory = emptyList(),
-            relationships = emptyMap()
+            description = model.description,
         )
 
         return ResponseModel(
@@ -48,7 +48,7 @@ class CreateCharacterImpl(
         return attrs.vitality * HEALTH_PER_VITALITY + BASE_HEALTH
     }
 
-    private fun calculateEnergy(attrs: Attributes): Int {
+    private fun calculateStamina(attrs: Attributes): Int {
         return attrs.energy * ENERGY_PER_ENERGY + BASE_ENERGY
     }
 }

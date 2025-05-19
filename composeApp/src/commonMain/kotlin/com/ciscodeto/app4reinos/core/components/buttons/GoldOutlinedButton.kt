@@ -13,7 +13,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
+@Preview
 @Composable
 fun GoldOutlinedButton(
     text: String,
@@ -42,4 +44,10 @@ fun GoldOutlinedButton(
                 .padding(vertical = 8.dp)
         )
     }
+}
+
+@Preview
+@Composable
+fun GoldOutlinedButtonPreview() {
+    GoldOutlinedButton("Preview Button", onClick = {})
 }

@@ -1,19 +1,23 @@
 package com.ciscodeto.sinapsia.di
 
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.ciscodeto.sinapsia.application.character.repository.CharacterRepository
+import com.ciscodeto.sinapsia.infrastructure.CreateDatabase
+import com.ciscodeto.sinapsia.infrastructure.SinapsiaDatabase
+import com.ciscodeto.sinapsia.infrastructure.character.CharacterRepositoryRoomImpl
+import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val sinapsiaModule = module {
+    single<RoomDatabase.Builder<SinapsiaDatabase>> { getDatabaseBuilder() }
+
+    single<SinapsiaDatabase> { CreateDatabase(get()).getDatabase() }
+
     // Infra
-    single { RoomDatabase.Builder.data(get(), AppDatabase::class.java, "sinapsia.db").build() }
-    single { get<AppDatabase>().characterDao() }
+    single { get<SinapsiaDatabase>().characterDao() }
 
     // Repository
-    single<CharacterRepository> { CharacterRepositoryImpl(get()) }
-
-    // Use cases
-    single { CreateCharacterUseCase(get()) }
-    single { GetCharacterUseCase(get()) }
+    single<CharacterRepository> { CharacterRepositoryRoomImpl(get()) }
 }
+
+expect fun getDatabaseBuilder() : RoomDatabase.Builder<SinapsiaDatabase>

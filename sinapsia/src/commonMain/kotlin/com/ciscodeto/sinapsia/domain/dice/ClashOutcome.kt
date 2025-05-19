@@ -2,7 +2,7 @@ package com.ciscodeto.domain.dice
 
 import com.ciscodeto.domain.actions.Action
 import com.ciscodeto.domain.actions.ActionResult
-import com.ciscodeto.domain.character.Character
+import com.ciscodeto.sinapsia.domain.character.Character
 
 data class ClashOutcome(
     val actor: Character,

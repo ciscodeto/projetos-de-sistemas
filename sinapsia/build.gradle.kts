@@ -37,21 +37,16 @@ kotlin {
     // https://developer.android.com/kotlin/multiplatform/migrate
     val xcfName = "sinapsiaKit"
 
-    iosX64 {
-        binaries.framework {
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
             baseName = xcfName
-        }
-    }
-
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
+            isStatic = true
+            // Required when using NativeSQLiteDriver
+            linkerOpts.add("-lsqlite3")
         }
     }
 
@@ -65,7 +60,6 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.koin.core)
-                implementation(libs.room.gradle.plugin)
                 implementation(libs.room.runtime)
                 implementation(libs.sqlite.bundled)
                 // Add KMP dependencies here
@@ -80,6 +74,8 @@ kotlin {
 
         androidMain {
             dependencies {
+                implementation(libs.koin.android)
+                implementation(libs.koin.androidx.compose)
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.

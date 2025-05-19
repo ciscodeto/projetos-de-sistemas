@@ -3,7 +3,7 @@ package com.ciscodeto.application.character.create
 import com.ciscodeto.sinapsia.domain.character.Attributes
 
 interface CreateCharacter {
-    fun create(model: RequestModel): ResponseModel
+    suspend fun create(model: RequestModel): ResponseModel
 
     data class RequestModel(
         val name: String,
@@ -15,6 +15,7 @@ interface CreateCharacter {
         val energy: Int,
         val attributes: Attributes,
         val attributeModifier: Attributes,
+        val description: String,
     )
 
     data class ResponseModel(

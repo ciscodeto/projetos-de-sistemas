@@ -1,8 +1,11 @@
 package com.ciscodeto.application.character.find
 
-import com.ciscodeto.domain.character.Character
+import com.ciscodeto.sinapsia.domain.character.Character
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 interface FindCharacter {
-    fun findById(id: String): Character?
-    fun findByName(name: String): List<Character>
+    @OptIn(ExperimentalUuidApi::class)
+    suspend fun findById(id: Uuid): Character?
+    suspend fun findByName(name: String): List<Character>
 }
