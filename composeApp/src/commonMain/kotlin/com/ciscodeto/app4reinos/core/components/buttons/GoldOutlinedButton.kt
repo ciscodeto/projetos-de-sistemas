@@ -27,12 +27,12 @@ fun GoldOutlinedButton(
         onClick = onClick,
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            contentColor = MaterialTheme.colorScheme.primaryContainer
+            containerColor = Color(0xFF2B1F1A),
+            contentColor = Color(0xFFB3A083)
         ),
         shape = RoundedCornerShape(4.dp),
-        border = BorderStroke(1.dp, Brush.verticalGradient(
-            listOf(MaterialTheme.colorScheme.outline, MaterialTheme.colorScheme.outlineVariant)
+        border = BorderStroke(2.dp, Brush.verticalGradient(
+            listOf(Color(0xFFD0CBC3), Color(0xFFB3A083))
         )),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)
     ) {
