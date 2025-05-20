@@ -7,12 +7,17 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.ciscodeto.app4reinos.NavDestinations.*
-import com.ciscodeto.app4reinos.character.presentation.screens.CharactersListScreen
 import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreen
+import com.ciscodeto.app4reinos.character.presentation.screens.CharactersListScreen
 import com.ciscodeto.app4reinos.home.HomeScreen
+import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreen
 import com.ciscodeto.app4reinos.item.ItemsListScreen
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 @Composable
 fun NavGraph(
     navController: NavHostController,
@@ -31,7 +36,12 @@ fun NavGraph(
                 CharactersListScreen(navController) }
 
             composable<CharacterScreen> {
-                CharacterScreen(navController) }
+                val args = it.toRoute<CharacterScreen>()
+                CharacterScreen(
+                    navController = navController,
+                    characterId = args.characterId?.let { id -> Uuid.fromByteArray(id.toByteArrayBase64()) }
+                )
+            }
 
             composable<ItemsListScreen> { ItemsListScreen(navController) }
         }

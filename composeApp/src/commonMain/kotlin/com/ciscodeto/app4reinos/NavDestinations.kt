@@ -13,9 +13,6 @@ sealed interface NavDestinations {
     data class EditCharacterScreen(val characterId: String) : NavDestinations
 
     @Serializable
-    data class CharacterDetailScreen(val characterId: String) : NavDestinations
-
-    @Serializable
     data object CharactersListScreen : NavDestinations
 
     @Serializable
