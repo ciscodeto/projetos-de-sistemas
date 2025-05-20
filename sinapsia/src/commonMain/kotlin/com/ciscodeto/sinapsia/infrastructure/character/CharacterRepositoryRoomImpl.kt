@@ -5,6 +5,7 @@ import com.ciscodeto.sinapsia.domain.character.Character
 import com.ciscodeto.sinapsia.application.character.repository.CharacterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.koin.core.logger.Logger
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 

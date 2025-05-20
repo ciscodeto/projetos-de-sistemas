@@ -1,6 +1,6 @@
 package com.ciscodeto.sinapsia.application.character.repository
 
-import com.ciscodeto.sinapsia.domain.character.Attributes
+import com.ciscodeto.sinapsia.domain.attributes.Attributes
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 @OptIn(ExperimentalUuidApi::class)

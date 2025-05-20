@@ -6,15 +6,17 @@ import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import com.ciscodeto.sinapsia.infrastructure.character.CharacterDao
 import com.ciscodeto.sinapsia.infrastructure.character.CharacterEntity
+import com.ciscodeto.sinapsia.infrastructure.item.ItemDao
 import com.ciscodeto.sinapsia.infrastructure.item.ItemEntity
 
-@Database(entities = [CharacterEntity::class, ItemEntity::class], version = 1, exportSchema = true)
+@Database(entities = [CharacterEntity::class, ItemEntity::class], version = 2, exportSchema = true)
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class SinapsiaDatabase : RoomDatabase() {
     abstract fun characterDao(): CharacterDao
+    abstract fun itemDao(): ItemDao
 }
 
-@Suppress("NO_ACTUAL_FOR_EXPECT", "EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect object AppDatabaseConstructor : RoomDatabaseConstructor<SinapsiaDatabase> {
     override fun initialize(): SinapsiaDatabase
 }

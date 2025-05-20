@@ -1,11 +1,14 @@
 package com.ciscodeto.sinapsia.application.item.repository
 
-import com.ciscodeto.domain.character.Item
+import com.ciscodeto.sinapsia.domain.item.Item
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 interface ItemRepository {
-    fun save(item: Item)
-    fun update(item: Item)
-    fun delete(id: String)
-    fun findAll(): List<Item>
-    fun findById(id: String): Item?
+    suspend fun save(item: ItemDto)
+    suspend fun update(item: ItemDto)
+    suspend fun delete(id: Uuid)
+    suspend fun findAll(): List<ItemDto>
+    suspend fun findById(id: Uuid): ItemDto?
 }

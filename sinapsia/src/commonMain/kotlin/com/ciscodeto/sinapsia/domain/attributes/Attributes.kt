@@ -1,4 +1,4 @@
-package com.ciscodeto.sinapsia.domain.character
+package com.ciscodeto.sinapsia.domain.attributes
 
 data class Attributes(
     val vitality: Int = 0,

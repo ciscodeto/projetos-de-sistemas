@@ -2,8 +2,9 @@ package com.ciscodeto.sinapsia.domain.character
 
 import com.ciscodeto.sinapsia.domain.actions.Action
 import com.ciscodeto.sinapsia.domain.actions.ActionResult
-import com.ciscodeto.domain.character.Item
-import com.ciscodeto.domain.shared.Entity
+import com.ciscodeto.sinapsia.domain.attributes.Attributes
+import com.ciscodeto.sinapsia.domain.item.Item
+import com.ciscodeto.sinapsia.domain.shared.Entity
 import com.ciscodeto.sinapsia.domain.shared.Notification
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -36,18 +37,23 @@ class Character(
     }
 
     fun levelUp() {
-        level++
+        levelUp(1)
+    }
+
+    fun levelUp(level: Int) {
+        this.level += level
         attributePoints = calculateAttributePoints()
     }
 
-    private fun calculateAttributePoints() = (level * 2) + 30 - attributes.total()
+    private fun calculateAttributePoints() = maxAttributePoints() - attributes.total()
+    private fun maxAttributePoints() = (level * 2) + 30
 
     private fun validate() = Notification().also {
         if (name.isBlank())
             it.addError("Character name must not be blank!")
         if (age < 0)
             it.addError("Character age must not be negative!")
-        if (attributes.total() <= calculateAttributePoints())
+        if (attributes.total() >= maxAttributePoints())
             it.addError("Character attribute points are exceeding the limit!")
     }
 }

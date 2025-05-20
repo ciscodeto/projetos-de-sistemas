@@ -1,7 +1,7 @@
 package com.ciscodeto.sinapsia.domain.actions
 
-import com.ciscodeto.domain.character.AttributeType
-import com.ciscodeto.sinapsia.domain.character.Attributes
+import com.ciscodeto.sinapsia.domain.attributes.AttributeType
+import com.ciscodeto.sinapsia.domain.attributes.Attributes
 import com.ciscodeto.sinapsia.domain.character.Character
 
 class CompositeAction(

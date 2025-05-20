@@ -1,10 +1,11 @@
 package com.ciscodeto.sinapsia.application.character.create
 
 import com.ciscodeto.sinapsia.application.character.create.CreateCharacter.*
-import com.ciscodeto.sinapsia.domain.character.Attributes
+import com.ciscodeto.sinapsia.domain.attributes.Attributes
 import com.ciscodeto.sinapsia.domain.character.Character
 import com.ciscodeto.sinapsia.domain.character.CharacterId
 import com.ciscodeto.sinapsia.application.character.repository.CharacterRepository
+import com.ciscodeto.sinapsia.application.character.repository.toDto
 import kotlin.uuid.ExperimentalUuidApi
 
 class CreateCharacterImpl(
@@ -37,6 +38,8 @@ class CreateCharacterImpl(
             inventory = emptyList(),
             description = model.description,
         )
+
+        repository.save(character.toDto())
 
         return ResponseModel(
             id = character.id.toString(),

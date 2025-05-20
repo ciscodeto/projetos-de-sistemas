@@ -1,9 +1,7 @@
 package com.ciscodeto.sinapsia.application.character.update
 
-import com.ciscodeto.sinapsia.domain.character.Attributes
-import com.ciscodeto.domain.character.Item
+import com.ciscodeto.sinapsia.domain.attributes.Attributes
 
-import com.ciscodeto.sinapsia.domain.character.Character
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 

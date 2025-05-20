@@ -1,6 +1,6 @@
 package com.ciscodeto.sinapsia.application.character.create
 
-import com.ciscodeto.sinapsia.domain.character.Attributes
+import com.ciscodeto.sinapsia.domain.attributes.Attributes
 
 interface CreateCharacter {
     suspend fun create(model: RequestModel): ResponseModel
@@ -11,8 +11,6 @@ interface CreateCharacter {
         val level: Int,
         val experience: Int,
         val gold: Int,
-        val health: Int,
-        val energy: Int,
         val attributes: Attributes,
         val attributeModifier: Attributes,
         val description: String,
