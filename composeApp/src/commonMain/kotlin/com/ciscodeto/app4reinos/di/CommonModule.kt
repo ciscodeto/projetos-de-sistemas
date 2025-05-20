@@ -29,7 +29,7 @@ val viewModelModule = module {
         CharactersListViewModel(get())
     }
     viewModel {
-        CharacterViewModel(get())
+        CharacterViewModel(get(), get())
     }
 }
 

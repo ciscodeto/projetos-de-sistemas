@@ -38,7 +38,9 @@ fun AttributeRow(
     value: Int,
     modifier: Modifier = Modifier,
     editable: Boolean = false,
-    icon: @Composable () -> Unit = {}
+    icon: @Composable () -> Unit = {},
+    onIncrease: () -> Unit = {},
+    onDecrease: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -48,7 +50,11 @@ fun AttributeRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(name, color = Color(0xFFD6BFA1), fontSize = 16.sp)
-        AttributeCounter(value = value)
+        AttributeCounter(value = value,
+            editable = editable,
+            onIncrease = onIncrease,
+            onDecrease = onDecrease
+        )
     }
 }
 
@@ -56,14 +62,16 @@ fun AttributeRow(
 fun AttributeCounter(
     value: Int,
     modifier: Modifier = Modifier,
-    editable: Boolean = false
+    editable: Boolean = false,
+    onIncrease: () -> Unit = {},
+    onDecrease: () -> Unit = {}
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.background(Color(0xFF1E120C))
     ) {
         StyledIconButton(
-            onClick = {},
+            onClick = onDecrease,
             icon = { Icon(
                 imageVector = Icons.Default.Remove,
                 contentDescription = "Subtract",
@@ -76,7 +84,7 @@ fun AttributeCounter(
             modifier = Modifier.padding(horizontal = 8.dp)
         )
         StyledIconButton(
-            onClick = {},
+            onClick = onIncrease,
             icon = { Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "Add",

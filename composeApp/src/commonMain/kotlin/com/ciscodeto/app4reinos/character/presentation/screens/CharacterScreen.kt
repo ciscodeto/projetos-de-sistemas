@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
@@ -45,6 +46,8 @@ fun CharacterScreen(
 
     val scrollState = rememberScrollState()
 
+    viewModel.init(characterId)
+
     ReinosScaffold(
         topBar = {
             ReinosAppBar(
@@ -68,37 +71,62 @@ fun CharacterScreen(
             CharacterHeader(
                 name = character.name,
                 level = character.level,
-                editable = mode != CharacterScreenMode.VIEW
+                editable = mode != CharacterScreenMode.VIEW,
+                onNameChange = { viewModel.updateName(it) },
+                onLevelChange = { viewModel.updateLevel(it) }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             RoundedColumn {
-                AttributeRow("ENERGIA", character.energy)
+                AttributeRow(
+                    name = "VITALIDADE",
+                    value = character.vitality,
+                    editable = mode != CharacterScreenMode.VIEW,
+                    onIncrease = { viewModel.increaseAttribute("VITALIDADE") },
+                    onDecrease = { viewModel.decreaseAttribute("VITALIDADE") }
+                )
                 VitalStatSection(
                     currentValue = character.health,
                     maxValue = character.vitality * 10,
                     foregroundColor = Color(0xFFC01D20)
                 )
-                AttributeRow("ENERGIA", character.energy)
+                AttributeRow(
+                    name = "ENERGIA",
+                    value = character.energy,
+                    editable = mode != CharacterScreenMode.VIEW,
+                    onIncrease = { viewModel.increaseAttribute("ENERGIA") },
+                    onDecrease = { viewModel.decreaseAttribute("ENERGIA") }
+                )
                 VitalStatSection(
                     currentValue = character.stamina,
                     maxValue = character.energy * 10,
-                    foregroundColor = Color(0xFF22869A)
+                    foregroundColor = Color(0xFF22869A),
                 )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            RoundedColumn { AttributeList(
-                attributes = character.attributes(),
-                //editable = mode != CharacterScreenMode.VIEW
-            ) }
+            RoundedColumn { Text("Pontos disponíveis: ${character.availablePoints()}")
+                character.attributes().forEach { (name, value) ->
+                    AttributeRow(
+                        name = name,
+                        value = value,
+                        editable = mode != CharacterScreenMode.VIEW,
+                        onIncrease = { viewModel.increaseAttribute(name) },
+                        onDecrease = { viewModel.decreaseAttribute(name) }
+                    )
+                } }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (mode != CharacterScreenMode.VIEW) {
-                CharacterOptions()
+            if (mode == CharacterScreenMode.CREATE) {
+                Button(
+                    onClick = { viewModel.createCharacter() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Salvar Personagem")
+                }
             }
         }
     }
