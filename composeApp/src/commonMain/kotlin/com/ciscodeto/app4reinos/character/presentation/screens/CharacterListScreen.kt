@@ -1,6 +1,5 @@
-package com.ciscodeto.app4reinos.character.presentation
+package com.ciscodeto.app4reinos.character.presentation.screens
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,16 +9,18 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.ciscodeto.app4reinos.NavDestinations
 import com.ciscodeto.app4reinos.NavDestinations.*
+import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharactersListViewModel
 import com.ciscodeto.app4reinos.character.presentation.components.CharacterListElement
 import com.ciscodeto.app4reinos.core.components.bar.ReinosAppBar
+import com.ciscodeto.app4reinos.core.components.layout.ReinosScaffold
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -27,9 +28,9 @@ fun CharactersListScreen(
     navController: NavController,
     viewModel: CharactersListViewModel = koinViewModel()
 ) {
-    val characters = viewModel.characters.value
+    val characters by viewModel.characters.collectAsState()
 
-    Scaffold(
+    ReinosScaffold(
         topBar = {
             ReinosAppBar(
                 title = "Characters",
@@ -39,7 +40,7 @@ fun CharactersListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(CreateCharacterScreen("Help")) },
+                onClick = { navController.navigate(CharacterScreen("Help")) },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = Color.Black
             ) {
@@ -48,11 +49,10 @@ fun CharactersListScreen(
         },
     ) { paddingValues ->
         LazyColumn(
-            contentPadding = paddingValues,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(paddingValues)
+                .padding(horizontal = 16.dp)
         ) {
             items(characters) { character ->
                 CharacterListElement(
@@ -66,9 +66,3 @@ fun CharactersListScreen(
         }
     }
 }
-
-data class Character(
-    val name: String,
-    val level: Int,
-    val id: String,
-)

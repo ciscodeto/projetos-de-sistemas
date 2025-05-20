@@ -1,4 +1,4 @@
-package com.ciscodeto.app4reinos.character.presentation
+package com.ciscodeto.app4reinos.character.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,8 +11,8 @@ import kotlin.uuid.ExperimentalUuidApi
 class CharactersListViewModel(
     private val findAllCharacters: FindAllCharacters
 ) : ViewModel() {
-    private val _characters = MutableStateFlow<List<Character>>(emptyList())
-    val characters: StateFlow<List<Character>> = _characters
+    private val _characters = MutableStateFlow<List<Element>>(emptyList())
+    val characters: StateFlow<List<Element>> = _characters
 
     init {
         loadCharacters()
@@ -22,7 +22,7 @@ class CharactersListViewModel(
     private fun loadCharacters() {
         viewModelScope.launch {
             _characters.value = findAllCharacters.findAll().map {
-                Character(
+                Element(
                     id = it.id.toString(),
                     name = it.name,
                     level = it.level
@@ -31,3 +31,9 @@ class CharactersListViewModel(
         }
     }
 }
+
+data class Element(
+    val name: String,
+    val level: Int,
+    val id: String,
+)
