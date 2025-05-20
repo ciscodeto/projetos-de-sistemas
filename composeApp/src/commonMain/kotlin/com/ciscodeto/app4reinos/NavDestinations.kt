@@ -7,7 +7,7 @@ sealed interface NavDestinations {
     data object HomeScreen : NavDestinations
 
     @Serializable
-    data class CreateCharacterScreen(val characterId: String) : NavDestinations
+    data class CharacterScreen(val characterId: String? = null) : NavDestinations
 
     @Serializable
     data class EditCharacterScreen(val characterId: String) : NavDestinations
