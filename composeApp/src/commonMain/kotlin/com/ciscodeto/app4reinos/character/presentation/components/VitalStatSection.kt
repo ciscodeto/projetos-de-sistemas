@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 fun VitalStatSection(
     title: String,
     value: Int,
+    maxValue: Int = 100,
 ) {
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -36,31 +37,24 @@ fun VitalStatSection(
             Text(title, color = Color(0xFFD6BFA1), fontSize = 16.sp)
             AttributeCounter(value = value)
         }
-        LinearProgressIndicator(
-            gapSize = (value / 100f).dp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(10.dp)
-                .clip(RoundedCornerShape(10.dp)),
-            color = Color(0xFFE7DFD6),
-            trackColor = Color.DarkGray
-        )
+
     }
 }
 
 @Composable
-fun LifeBar(
-    currentHealth: Int,
-    maxHealth: Int,
+fun VitalStatSection(
+    currentValue: Int,
+    maxValue: Int,
     modifier: Modifier = Modifier,
-    barHeight: Dp = 20.dp,
+    barHeight: Dp = 8.dp,
     backgroundColor: Color = Color(0x1affffff),
     foregroundColor: Color = Color(0xFFC01D20)
 ) {
-    val healthPercent = (currentHealth.toFloat() / maxHealth).coerceIn(0f, 1f)
+    val healthPercent = (currentValue.toFloat() / maxValue).coerceIn(0f, 1f)
 
     Box(
         modifier = modifier
+            .padding(vertical = 4.dp)
             .height(barHeight)
             .fillMaxWidth()
             .background(backgroundColor, shape = RoundedCornerShape(12.dp))

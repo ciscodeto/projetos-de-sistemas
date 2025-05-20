@@ -12,20 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ciscodeto.app4reinos.character.domain.AttributeUi
+
 @Composable
-fun AttributeList(attributes: List<String>) {
+fun AttributeList(attributes: List<AttributeUi>) {
     Column(modifier = Modifier.fillMaxWidth()) {
         attributes.forEach {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(it, color = Color(0xFFD6BFA1), fontSize = 16.sp)
-                AttributeCounter(value = 99)
-            }
+            AttributeRow(it.name, it.value)
         }
     }
 }

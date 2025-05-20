@@ -3,8 +3,12 @@ package com.ciscodeto.app4reinos.character.domain
 data class CharacterUi(
     val name: String = "",
     val level: Int = 1,
-    val vitality: Int = 50,
-    val energy: Int = 50,
+
+    val health: Int = 70,
+    val stamina: Int = 50,
+
+    val vitality: Int = 10,
+    val energy: Int = 10,
     val strength: Int = 10,
     val resistance: Int = 10,
     val agility: Int = 10,

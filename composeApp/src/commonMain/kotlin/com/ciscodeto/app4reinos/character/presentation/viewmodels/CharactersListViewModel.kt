@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 class CharactersListViewModel(
     private val findAllCharacters: FindAllCharacters
@@ -23,7 +24,7 @@ class CharactersListViewModel(
         viewModelScope.launch {
             _characters.value = findAllCharacters.findAll().map {
                 Element(
-                    id = it.id.toString(),
+                    id = it.id.value(),
                     name = it.name,
                     level = it.level
                 )
@@ -32,8 +33,8 @@ class CharactersListViewModel(
     }
 }
 
-data class Element(
+data class Element @OptIn(ExperimentalUuidApi::class) constructor(
     val name: String,
     val level: Int,
-    val id: String,
+    val id: Uuid,
 )

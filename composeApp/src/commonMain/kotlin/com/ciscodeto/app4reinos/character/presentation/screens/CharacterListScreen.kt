@@ -21,8 +21,11 @@ import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharactersList
 import com.ciscodeto.app4reinos.character.presentation.components.CharacterListElement
 import com.ciscodeto.app4reinos.core.components.bar.ReinosAppBar
 import com.ciscodeto.app4reinos.core.components.layout.ReinosScaffold
+import com.ciscodeto.app4reinos.toBase64String
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.uuid.ExperimentalUuidApi
 
+@OptIn(ExperimentalUuidApi::class)
 @Composable
 fun CharactersListScreen(
     navController: NavController,
@@ -40,7 +43,7 @@ fun CharactersListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(CharacterScreen("Help")) },
+                onClick = { navController.navigate(CharacterScreen()) },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = Color.Black
             ) {
@@ -59,8 +62,8 @@ fun CharactersListScreen(
                     name = character.name,
                     level = character.level,
                     onClick = { navController
-                        .navigate(CharacterDetailScreen(character.id)
-                    ) }
+                        .navigate(CharacterScreen(character.id.toByteArray().toBase64String()))
+                    }
                 )
             }
         }
