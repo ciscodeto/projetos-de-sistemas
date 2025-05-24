@@ -22,8 +22,8 @@ class UpdateCharacterImpl(
             level = character.level,
             experience = character.experience,
             gold = character.gold,
-            health = character.health,
-            stamina = character.stamina,
+            currentHealth = character.currentHealth,
+            currentEnergy = character.currentEnergy,
             attributes = character.attributes,
         )
 

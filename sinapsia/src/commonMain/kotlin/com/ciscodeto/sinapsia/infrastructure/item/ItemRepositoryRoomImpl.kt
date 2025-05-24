@@ -12,7 +12,7 @@ class ItemRepositoryRoomImpl(
     private val dao: ItemDao,
 ) : ItemRepository {
     override suspend fun save(item: ItemDto) {
-        //dao.insert(item.toEntity())
+        dao.insert(item.toEntity())
     }
 
     override suspend fun update(item: ItemDto) {

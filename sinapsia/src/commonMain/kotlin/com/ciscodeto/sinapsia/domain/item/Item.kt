@@ -10,11 +10,12 @@ class Item(
     id: ItemId,
     val name: String,
     val description: String,
-    val age: Int,
-    var level: Int,
-    var experience: Int,
-    var health: Int,
-    var stamina: Int,
+    val price: Int,
+    val age: Int = 0,
+    var level: Int = 0,
+    var experience: Int = 0,
+    var currentHealth: Int = 0,
+    var currentEnergy: Int = 0,
     var attributes: Attributes,
 ) : Entity<Uuid>(id) {
 

@@ -22,8 +22,8 @@ interface UpdateCharacter {
         val level: Int,
         val experience: Int,
         val gold: Int,
-        val health: Int,
-        val stamina: Int,
+        val currentHealth: Int,
+        val currentEnergy: Int,
         val attributes: Attributes,
     )
 }

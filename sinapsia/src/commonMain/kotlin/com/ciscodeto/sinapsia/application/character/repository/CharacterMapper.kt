@@ -4,7 +4,6 @@ import com.ciscodeto.sinapsia.domain.character.CharacterId
 import com.ciscodeto.sinapsia.domain.character.Character
 import kotlin.uuid.ExperimentalUuidApi
 
-
 @OptIn(ExperimentalUuidApi::class)
 fun Character.toDto() = CharacterDto(
     id = id.value(),
@@ -14,8 +13,8 @@ fun Character.toDto() = CharacterDto(
     level = level,
     experience = experience,
     gold = gold,
-    health = health,
-    stamina = stamina,
+    currentHealth = currentHealth,
+    currentEnergy = currentEnergy,
     attributes = attributes,
 )
 
@@ -28,8 +27,8 @@ fun CharacterDto.toDomain() = Character(
     level = level,
     experience = experience,
     gold = gold,
-    health = health,
-    stamina = stamina,
+    currentHealth = currentHealth,
+    currentEnergy = currentEnergy,
     attributes = attributes,
     attributeModifier = null
 )

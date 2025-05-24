@@ -1,3 +1,5 @@
+@file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+
 package com.ciscodeto.sinapsia.infrastructure
 
 import androidx.room.ConstructedBy
@@ -9,7 +11,7 @@ import com.ciscodeto.sinapsia.infrastructure.character.CharacterEntity
 import com.ciscodeto.sinapsia.infrastructure.item.ItemDao
 import com.ciscodeto.sinapsia.infrastructure.item.ItemEntity
 
-@Database(entities = [CharacterEntity::class, ItemEntity::class], version = 2, exportSchema = true)
+@Database(entities = [CharacterEntity::class, ItemEntity::class], version = 3, exportSchema = true)
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class SinapsiaDatabase : RoomDatabase() {
     abstract fun characterDao(): CharacterDao

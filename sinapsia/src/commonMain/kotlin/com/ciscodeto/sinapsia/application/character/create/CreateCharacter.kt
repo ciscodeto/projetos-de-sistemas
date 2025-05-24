@@ -8,12 +8,13 @@ interface CreateCharacter {
     data class RequestModel(
         val name: String,
         val age: Int,
+        val description: String,
         val level: Int,
         val experience: Int,
         val gold: Int,
+        val currentHealth: Int,
+        val currentEnergy: Int,
         val attributes: Attributes,
-        val attributeModifier: Attributes,
-        val description: String,
     )
 
     data class ResponseModel(

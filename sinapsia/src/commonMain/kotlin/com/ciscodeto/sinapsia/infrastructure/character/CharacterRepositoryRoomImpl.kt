@@ -25,8 +25,10 @@ class CharacterRepositoryRoomImpl(
         dao.delete(id.toByteArray())
     }
 
-    override suspend fun findAll(): List<CharacterDto> {
-        return dao.getAll().map { it.toDto() }
+    override suspend fun findAll(): Flow<List<CharacterDto>> {
+        return dao.getAll().map { entities ->
+            entities.map { it.toDto() }
+        }
     }
 
     override suspend fun findAllByName(name: String): List<CharacterDto> {

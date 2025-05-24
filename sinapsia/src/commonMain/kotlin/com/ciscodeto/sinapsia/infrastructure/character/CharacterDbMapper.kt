@@ -27,8 +27,8 @@ fun CharacterEntity.toDto() = run {
         experience = experience,
         description = description,
         gold = gold,
-        health = health,
-        stamina = stamina,
+        currentHealth = currentHealth,
+        currentEnergy = currentEnergy,
         attributes = attributes,
     )
 }
@@ -43,8 +43,8 @@ fun CharacterDto.toEntity() = CharacterEntity(
     description = description,
     gold = gold,
 
-    health = health,
-    stamina = stamina,
+    currentHealth = currentHealth,
+    currentEnergy = currentEnergy,
 
     vitality = attributes.vitality,
     energy = attributes.energy,

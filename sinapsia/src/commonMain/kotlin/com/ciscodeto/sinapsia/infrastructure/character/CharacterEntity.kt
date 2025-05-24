@@ -18,8 +18,8 @@ data class CharacterEntity(
     var experience: Int = 0,
     var gold: Int = 0,
 
-    var health: Int = 0,
-    var stamina: Int = 0,
+    var currentHealth: Int = 0,
+    var currentEnergy: Int = 0,
 
     var vitality: Int = 0,
     var energy: Int = 0,
