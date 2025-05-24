@@ -2,6 +2,7 @@ package com.ciscodeto.app4reinos.character.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ciscodeto.app4reinos.character.domain.CharacterUi
 import com.ciscodeto.sinapsia.application.character.find.FindAllCharacters
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,14 +21,10 @@ class CharactersListViewModel(
     }
 
     @OptIn(ExperimentalUuidApi::class)
-    private fun loadCharacters() {
+    fun loadCharacters() {
         viewModelScope.launch {
-            _characters.value = findAllCharacters.findAll().map {
-                Element(
-                    id = it.id.value(),
-                    name = it.name,
-                    level = it.level
-                )
+            findAllCharacters.findAll().collect { dtoList ->
+                _characters.value = dtoList.map { Element(it.name, it.level, it.id) }
             }
         }
     }

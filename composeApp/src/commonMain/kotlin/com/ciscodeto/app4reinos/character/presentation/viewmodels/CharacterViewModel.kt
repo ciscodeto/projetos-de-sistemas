@@ -7,6 +7,8 @@ import com.ciscodeto.app4reinos.character.domain.CharacterUi
 import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreenMode
 import com.ciscodeto.sinapsia.application.character.create.CreateCharacter
 import com.ciscodeto.sinapsia.application.character.find.FindCharacter
+import com.ciscodeto.sinapsia.application.character.repository.toDto
+import com.ciscodeto.sinapsia.application.character.update.UpdateCharacter
 import com.ciscodeto.sinapsia.domain.attributes.Attributes
 import kotlinx.coroutines.launch
 import kotlin.uuid.ExperimentalUuidApi
@@ -14,16 +16,18 @@ import kotlin.uuid.Uuid
 
 class CharacterViewModel(
     private val createCharacter: CreateCharacter,
+    private val updateCharacter: UpdateCharacter,
     private val findCharacter: FindCharacter,
 ) : ViewModel() {
     val mode = mutableStateOf(CharacterScreenMode.VIEW)
-    val character = mutableStateOf(CharacterUi())
+    @OptIn(kotlin.uuid.ExperimentalUuidApi::class)
+    val character = mutableStateOf(CharacterUi(id = null))
 
     @OptIn(ExperimentalUuidApi::class)
     fun init(characterId: Uuid?) {
         if (characterId == null) {
             mode.value = CharacterScreenMode.CREATE
-            character.value = CharacterUi()
+            character.value = CharacterUi(id = null)
         } else {
             mode.value = CharacterScreenMode.VIEW
             findCharacterById(characterId)
@@ -37,10 +41,12 @@ class CharacterViewModel(
         }
     }
 
+    @OptIn(ExperimentalUuidApi::class)
     fun updateName(newName: String) {
         character.value = character.value.copy(name = newName)
     }
 
+    @OptIn(ExperimentalUuidApi::class)
     fun updateLevel(newLevel: Int) {
         character.value = character.value.copy(level = newLevel)
     }
@@ -62,12 +68,12 @@ class CharacterViewModel(
         }
     }
 
-
-    fun createCharacter() {
+    @OptIn(ExperimentalUuidApi::class)
+    fun updateCharacter() {
         val char = character.value
         viewModelScope.launch {
-            createCharacter.create(
-                CreateCharacter.RequestModel(
+            updateCharacter.update(
+                UpdateCharacter.RequestModel(
                     name = char.name,
                     age = 1,
                     level = char.level,
@@ -83,7 +89,37 @@ class CharacterViewModel(
                         wisdom = char.wisdom,
                         charisma = char.charisma
                     ),
-                    attributeModifier = Attributes(),
+                    description = "Null",
+                    id = char.id!!,
+                    currentHealth = char.currentHealth,
+                    currentEnergy = char.currentEnergy,
+                )
+            )
+        }
+    }
+
+    fun createCharacter() {
+        val char = character.value
+        viewModelScope.launch {
+            createCharacter.create(
+                CreateCharacter.RequestModel(
+                    name = char.name,
+                    age = 1,
+                    level = char.level,
+                    experience = 1,
+                    gold = 100,
+                    currentEnergy = char.currentEnergy,
+                    currentHealth = char.currentHealth,
+                    attributes = Attributes(
+                        vitality = char.vitality,
+                        energy = char.energy,
+                        strength = char.strength,
+                        endurance = char.endurance,
+                        dexterity = char.dexterity,
+                        intelligence = char.intelligence,
+                        wisdom = char.wisdom,
+                        charisma = char.charisma
+                    ),
                     description = "Null",
                 )
             )

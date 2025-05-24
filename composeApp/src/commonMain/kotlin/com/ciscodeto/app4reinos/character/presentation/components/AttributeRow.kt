@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ciscodeto.app4reinos.core.components.containers.RoundedColumn
@@ -81,7 +82,10 @@ fun AttributeCounter(
         Text(
             text = value.toString(),
             color = Color(0xFFD6BFA1),
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .size(24.dp),
+            textAlign = TextAlign.Center,
         )
         StyledIconButton(
             onClick = onIncrease,

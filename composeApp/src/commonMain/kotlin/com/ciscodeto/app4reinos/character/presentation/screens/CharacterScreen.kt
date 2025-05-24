@@ -87,7 +87,7 @@ fun CharacterScreen(
                     onDecrease = { viewModel.decreaseAttribute("VITALIDADE") }
                 )
                 VitalStatSection(
-                    currentValue = character.health,
+                    currentValue = character.currentHealth,
                     maxValue = character.vitality * 10,
                     foregroundColor = Color(0xFFC01D20)
                 )
@@ -99,7 +99,7 @@ fun CharacterScreen(
                     onDecrease = { viewModel.decreaseAttribute("ENERGIA") }
                 )
                 VitalStatSection(
-                    currentValue = character.stamina,
+                    currentValue = character.currentEnergy,
                     maxValue = character.energy * 10,
                     foregroundColor = Color(0xFF22869A),
                 )
@@ -122,7 +122,17 @@ fun CharacterScreen(
 
             if (mode == CharacterScreenMode.CREATE) {
                 Button(
-                    onClick = { viewModel.createCharacter() },
+                    onClick = { viewModel.createCharacter()
+                                navController.navigateUp()},
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Salvar Personagem")
+                }
+            }
+            if (mode == CharacterScreenMode.EDIT) {
+                Button(
+                    onClick = { viewModel.updateCharacter()
+                        navController.navigateUp()},
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Salvar Personagem")
