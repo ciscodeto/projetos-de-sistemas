@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "c2baaabcd99011563aa17be1a31a1bd7",
+    "identityHash": "497d94db0f5f6a8b2f4e809f27d048df",
     "entities": [
       {
         "tableName": "characters",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `name` TEXT NOT NULL, `age` INTEGER NOT NULL, `description` TEXT NOT NULL, `level` INTEGER NOT NULL, `experience` INTEGER NOT NULL, `gold` INTEGER NOT NULL, `health` INTEGER NOT NULL, `stamina` INTEGER NOT NULL, `vitality` INTEGER NOT NULL, `energy` INTEGER NOT NULL, `strength` INTEGER NOT NULL, `dexterity` INTEGER NOT NULL, `endurance` INTEGER NOT NULL, `intelligence` INTEGER NOT NULL, `wisdom` INTEGER NOT NULL, `charisma` INTEGER NOT NULL, `createdAt` TEXT NOT NULL, `modifiedAt` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` BLOB NOT NULL, `name` TEXT NOT NULL, `age` INTEGER NOT NULL, `description` TEXT NOT NULL, `level` INTEGER NOT NULL, `experience` INTEGER NOT NULL, `gold` INTEGER NOT NULL, `currentHealth` INTEGER NOT NULL, `currentEnergy` INTEGER NOT NULL, `vitality` INTEGER NOT NULL, `energy` INTEGER NOT NULL, `strength` INTEGER NOT NULL, `dexterity` INTEGER NOT NULL, `endurance` INTEGER NOT NULL, `intelligence` INTEGER NOT NULL, `wisdom` INTEGER NOT NULL, `charisma` INTEGER NOT NULL, `createdAt` TEXT NOT NULL, `modifiedAt` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -51,14 +51,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "health",
-            "columnName": "health",
+            "fieldPath": "currentHealth",
+            "columnName": "currentHealth",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "stamina",
-            "columnName": "stamina",
+            "fieldPath": "currentEnergy",
+            "columnName": "currentEnergy",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -223,7 +223,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c2baaabcd99011563aa17be1a31a1bd7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '497d94db0f5f6a8b2f4e809f27d048df')"
     ]
   }
 }
