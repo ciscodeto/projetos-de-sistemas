@@ -33,6 +33,64 @@ import com.ciscodeto.app4reinos.core.components.inputFields.NumberInputField
 import com.ciscodeto.app4reinos.core.components.inputFields.TextInputField
 
 @Composable
+fun CharacterHeaderView(
+    name: String,
+    level: Int
+) {
+    CharacterHeaderBase(
+        name = { modifier ->
+            Text(
+                text = name,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.primary
+                ),
+                modifier = modifier
+            )
+        },
+        level = {
+            Text(
+                text = "$level",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.primary
+                )
+            )
+        },
+    )
+}
+
+@Composable
+fun EditableCharacterHeader(
+    name: String,
+    level: Int,
+    onNameChange: (String) -> Unit,
+    onLevelChange: (Int) -> Unit,
+) {
+    CharacterHeaderBase(
+        name = { modifier ->
+            TextInputField(
+                value = name,
+                onValueChange = { value -> onNameChange(value) },
+                modifier = modifier
+            )
+        },
+        level = { modifier ->
+            NumberInputField(
+                value = level.toString(),
+                onValueChange = { value ->
+                    val intValue = value.toIntOrNull()
+                    if (intValue != null) onLevelChange(intValue)
+                },
+                modifier = modifier.fillMaxWidth()
+            )
+        }
+    )
+}
+
+@Composable
 fun CharacterHeaderBase(
     modifier: Modifier = Modifier,
     name: @Composable (modifier: Modifier) -> Unit,
@@ -79,115 +137,6 @@ fun CharacterHeaderBase(
                 )
             )
             level(Modifier)
-        }
-    }
-}
-
-@Composable
-fun CharacterHeader(
-    name: String,
-    level: Int,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(65.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .aspectRatio(1f)
-                .clip(CircleShape)
-                .background(Color.Gray)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = name,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.titleLarge.copy(
-                color = MaterialTheme.colorScheme.primary
-            ),
-            modifier = Modifier.weight(1f)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        RoundedColumn(
-            modifier = Modifier
-                .fillMaxHeight()
-                .aspectRatio(1f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "NÍVEL",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Normal,
-                style = MaterialTheme.typography.labelSmall.copy(
-                    color = MaterialTheme.colorScheme.primary
-                )
-            )
-            Text(
-                text = "$level",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.primary
-                )
-            )
-        }
-    }
-}
-
-
-@Composable
-fun CharacterHeader(
-    name: String,
-    level: Int,
-    onNameChange: (String) -> Unit = {},
-    onLevelChange: (Int) -> Unit = {}
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(65.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .aspectRatio(1f)
-                .clip(CircleShape)
-                .background(Color.Gray)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        TextInputField(
-            value = name,
-            onValueChange = { value -> onNameChange(value) },
-            modifier = Modifier.weight(1f)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        RoundedColumn(
-            modifier = Modifier
-                .fillMaxHeight()
-                .aspectRatio(1f)
-        ) {
-            Text(
-                text = "NÍVEL",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Normal,
-                style = MaterialTheme.typography.labelSmall.copy(
-                    color = MaterialTheme.colorScheme.primary
-                )
-            )
-            NumberInputField(
-                value = level.toString(),
-                onValueChange = { value ->
-                    val intValue = value.toIntOrNull()
-                    if (intValue != null) onLevelChange(intValue)
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
         }
     }
 }

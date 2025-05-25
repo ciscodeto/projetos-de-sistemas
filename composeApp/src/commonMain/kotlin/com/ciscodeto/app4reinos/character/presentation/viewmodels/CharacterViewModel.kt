@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
+@OptIn(kotlin.uuid.ExperimentalUuidApi::class)
 class CharacterViewModel(
     private val characterCreationService: CharacterCreationService,
     private val createCharacter: CreateCharacter,
@@ -21,11 +22,9 @@ class CharacterViewModel(
     private val findCharacter: FindCharacter,
 ) : ViewModel() {
     val mode = mutableStateOf(CharacterScreenMode.VIEW)
-    @OptIn(kotlin.uuid.ExperimentalUuidApi::class)
     val character = mutableStateOf(CharacterUi(id = null))
     val availablePoints = mutableStateOf(0)
 
-    @OptIn(ExperimentalUuidApi::class)
     fun init(characterId: Uuid?) {
         if (characterId == null) {
             mode.value = CharacterScreenMode.CREATE
@@ -36,19 +35,16 @@ class CharacterViewModel(
         }
     }
 
-    @OptIn(ExperimentalUuidApi::class)
-    fun findCharacterById(id: Uuid) {
+    private fun findCharacterById(id: Uuid) {
         viewModelScope.launch {
             character.value = findCharacter.findById(id)?.let { CharacterUi().fromDto(it) } ?: CharacterUi()
         }
     }
 
-    @OptIn(ExperimentalUuidApi::class)
     fun updateName(newName: String) {
         character.value = character.value.copy(name = newName)
     }
 
-    @OptIn(ExperimentalUuidApi::class)
     fun updateLevel(newLevel: Int) {
         character.value = character.value.copy(level = newLevel)
     }
@@ -70,7 +66,6 @@ class CharacterViewModel(
         }
     }
 
-    @OptIn(ExperimentalUuidApi::class)
     fun updateCharacter() {
         val char = character.value
         viewModelScope.launch {

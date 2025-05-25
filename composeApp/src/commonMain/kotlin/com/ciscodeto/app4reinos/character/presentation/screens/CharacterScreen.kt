@@ -23,7 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharacterViewModel
 import com.ciscodeto.app4reinos.character.presentation.components.AttributeRow
-import com.ciscodeto.app4reinos.character.presentation.components.CharacterHeader
+import com.ciscodeto.app4reinos.character.presentation.components.CharacterHeaderView
+import com.ciscodeto.app4reinos.character.presentation.components.EditableCharacterHeader
 import com.ciscodeto.app4reinos.character.presentation.components.VitalStatSection
 import com.ciscodeto.app4reinos.core.components.bar.ReinosAppBar
 import com.ciscodeto.app4reinos.core.components.containers.RoundedColumn
@@ -71,12 +72,19 @@ fun CharacterScreen(
                 .padding(16.dp)
                 .verticalScroll(scrollState)
         ) {
-            CharacterHeader(
-                name = character.name,
-                level = character.level,
-                {},
-                {}
-            )
+            if (mode == CharacterScreenMode.VIEW) {
+                CharacterHeaderView(
+                    name = character.name,
+                    level = character.level,
+                )
+            } else {
+                EditableCharacterHeader(
+                    name = character.name,
+                    level = character.level,
+                    onNameChange = { viewModel.updateName(it) },
+                    onLevelChange = { viewModel.updateLevel(it) }
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
