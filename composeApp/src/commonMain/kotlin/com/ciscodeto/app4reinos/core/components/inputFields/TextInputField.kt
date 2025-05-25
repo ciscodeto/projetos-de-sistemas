@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -28,21 +29,23 @@ fun TextInputField(
 ) {
     Box(
         modifier = modifier
-            .background(Color(0xFF1E120C), shape = RoundedCornerShape(8.dp)) // Fundo escuro e bordas arredondadas
-            .border(1.dp, Color(0xFF473229), RoundedCornerShape(8.dp)), // Borda marrom claro
-        contentAlignment = Alignment.CenterStart // Alinha o texto ao início
+            .background(Color(0xFF1E120C), shape = RoundedCornerShape(4.dp))
+            .border(1.dp, Color(0xFF473229), RoundedCornerShape(4.dp)),
+        contentAlignment = Alignment.CenterStart
     ) {
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
             singleLine = true,
-            textStyle = MaterialTheme.typography.titleLarge.copy( // Usar um estilo de texto do Material 3
-                color = Color(0xFFD6BFA1), // Cor do texto
+            textStyle = MaterialTheme.typography.titleLarge.copy(
+                color = Color(0xFFD6BFA1),
                 fontSize = 16.sp,
             ),
             modifier = Modifier
                 .padding(horizontal = 4.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            cursorBrush = SolidColor(Color(0xFFD6BFA1)),
+
         )
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,14 +43,15 @@ fun NumberInputField(
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
-            textStyle = MaterialTheme.typography.bodyLarge.copy( // Usar um estilo de texto do Material 3
-                color = Color(0xFFD6BFA1), // Cor do texto
-                textAlign = TextAlign.Center, // Centraliza o input
-                fontSize = 16.sp // Tamanho de fonte "normal"
+            textStyle = MaterialTheme.typography.bodyLarge.copy(
+                color = Color(0xFFD6BFA1),
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp
             ),
             modifier = Modifier
-                .fillMaxHeight() // Preenche a altura disponível do Box
-                .width(36.dp) // Ajusta a largura ao conteúdo
+                .fillMaxHeight()
+                .width(36.dp),
+            cursorBrush = SolidColor(Color(0xFFD6BFA1)),
         )
     }
 }
