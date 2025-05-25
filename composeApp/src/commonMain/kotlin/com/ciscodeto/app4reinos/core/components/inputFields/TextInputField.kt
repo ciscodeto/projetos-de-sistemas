@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -28,20 +29,20 @@ fun TextInputField(
     Box(
         modifier = modifier
             .background(Color(0xFF1E120C), shape = RoundedCornerShape(8.dp)) // Fundo escuro e bordas arredondadas
-            .border(1.dp, Color(0xFFD6BFA1), RoundedCornerShape(8.dp)), // Borda marrom claro
+            .border(1.dp, Color(0xFF473229), RoundedCornerShape(8.dp)), // Borda marrom claro
         contentAlignment = Alignment.CenterStart // Alinha o texto ao início
     ) {
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
             singleLine = true,
-            textStyle = MaterialTheme.typography.bodyLarge.copy( // Usar um estilo de texto do Material 3
+            textStyle = MaterialTheme.typography.titleLarge.copy( // Usar um estilo de texto do Material 3
                 color = Color(0xFFD6BFA1), // Cor do texto
-                fontSize = 16.sp // Tamanho de fonte "normal"
+                fontSize = 16.sp,
             ),
             modifier = Modifier
                 .padding(horizontal = 4.dp)
-                .fillMaxSize()
+                .fillMaxWidth()
         )
     }
 }
