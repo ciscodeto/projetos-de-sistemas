@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ciscodeto.app4reinos.character.domain.CharacterUi
 import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreenMode
+import com.ciscodeto.sinapsia.application.character.create.CharacterCreationService
 import com.ciscodeto.sinapsia.application.character.create.CreateCharacter
 import com.ciscodeto.sinapsia.application.character.find.FindCharacter
-import com.ciscodeto.sinapsia.application.character.repository.toDto
 import com.ciscodeto.sinapsia.application.character.update.UpdateCharacter
 import com.ciscodeto.sinapsia.domain.attributes.Attributes
 import kotlinx.coroutines.launch
@@ -15,6 +15,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 class CharacterViewModel(
+    private val characterCreationService: CharacterCreationService,
     private val createCharacter: CreateCharacter,
     private val updateCharacter: UpdateCharacter,
     private val findCharacter: FindCharacter,
@@ -22,6 +23,7 @@ class CharacterViewModel(
     val mode = mutableStateOf(CharacterScreenMode.VIEW)
     @OptIn(kotlin.uuid.ExperimentalUuidApi::class)
     val character = mutableStateOf(CharacterUi(id = null))
+    val availablePoints = mutableStateOf(0)
 
     @OptIn(ExperimentalUuidApi::class)
     fun init(characterId: Uuid?) {
@@ -37,7 +39,7 @@ class CharacterViewModel(
     @OptIn(ExperimentalUuidApi::class)
     fun findCharacterById(id: Uuid) {
         viewModelScope.launch {
-            character.value = findCharacter.findById(id)?.let { CharacterUi().from(it) } ?: CharacterUi()
+            character.value = findCharacter.findById(id)?.let { CharacterUi().fromDto(it) } ?: CharacterUi()
         }
     }
 
@@ -53,7 +55,7 @@ class CharacterViewModel(
 
     fun increaseAttribute(attribute: String) {
         val char = character.value
-        if (char.availablePoints() > 0) {
+        if (characterCreationService.getRemainingPoints(char.attributes(), char.level) > 0) {
             val updatedValue = char.getAttribute(attribute) + 1
             character.value = char.setAttribute(attribute, updatedValue)
         }

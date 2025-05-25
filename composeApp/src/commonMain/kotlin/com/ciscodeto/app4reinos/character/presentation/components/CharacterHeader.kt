@@ -1,14 +1,22 @@
 package com.ciscodeto.app4reinos.character.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -20,56 +28,166 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ciscodeto.app4reinos.core.components.containers.RoundedColumn
+import com.ciscodeto.app4reinos.core.components.inputFields.NumberInputField
+import com.ciscodeto.app4reinos.core.components.inputFields.TextInputField
+
+@Composable
+fun CharacterHeaderBase(
+    modifier: Modifier = Modifier,
+    name: @Composable (modifier: Modifier) -> Unit,
+    level: @Composable (modifier: Modifier) -> Unit,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(65.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f)
+                .clip(CircleShape)
+                .background(Color.Gray),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                Icons.Filled.Person,
+                "Empty Character Picture",
+                tint = Color.Black,
+                modifier = Modifier
+                    .fillMaxSize(.5f)
+            )
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        name(Modifier.weight(1f))
+        Spacer(modifier = Modifier.width(16.dp))
+        RoundedColumn(
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "NÍVEL",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                style = MaterialTheme.typography.labelSmall.copy(
+                    color = MaterialTheme.colorScheme.primary
+                )
+            )
+            level(Modifier)
+        }
+    }
+}
 
 @Composable
 fun CharacterHeader(
     name: String,
     level: Int,
-    editable: Boolean,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(65.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f)
+                .clip(CircleShape)
+                .background(Color.Gray)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = name,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.titleLarge.copy(
+                color = MaterialTheme.colorScheme.primary
+            ),
+            modifier = Modifier.weight(1f)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        RoundedColumn(
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "NÍVEL",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                style = MaterialTheme.typography.labelSmall.copy(
+                    color = MaterialTheme.colorScheme.primary
+                )
+            )
+            Text(
+                text = "$level",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = MaterialTheme.colorScheme.primary
+                )
+            )
+        }
+    }
+}
+
+
+@Composable
+fun CharacterHeader(
+    name: String,
+    level: Int,
     onNameChange: (String) -> Unit = {},
     onLevelChange: (Int) -> Unit = {}
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(65.dp)
     ) {
         Box(
             modifier = Modifier
-                .size(100.dp)
+                .fillMaxHeight()
+                .aspectRatio(1f)
                 .clip(CircleShape)
                 .background(Color.Gray)
         )
         Spacer(modifier = Modifier.width(16.dp))
-
-        Column {
-            if (!editable) {
-                Text(
-                    text = name,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        color = MaterialTheme.colorScheme.primary
-                    )
+        TextInputField(
+            value = name,
+            onValueChange = { value -> onNameChange(value) },
+            modifier = Modifier.weight(1f)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        RoundedColumn(
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f)
+        ) {
+            Text(
+                text = "NÍVEL",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                style = MaterialTheme.typography.labelSmall.copy(
+                    color = MaterialTheme.colorScheme.primary
                 )
-                Text("NÍVEL $level", fontSize = 14.sp)
-            } else {
-                TextField(
-                    value = name,
-                    onValueChange = onNameChange,
-                    label = { Text("Nome do Personagem") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                TextField(
-                    value = level.toString(),
-                    onValueChange = { value ->
-                        val intValue = value.toIntOrNull()
-                        if (intValue != null) onLevelChange(intValue)
-                    },
-                    label = { Text("Nível") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+            )
+            NumberInputField(
+                value = level.toString(),
+                onValueChange = { value ->
+                    val intValue = value.toIntOrNull()
+                    if (intValue != null) onLevelChange(intValue)
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

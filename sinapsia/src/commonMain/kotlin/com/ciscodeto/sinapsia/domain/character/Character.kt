@@ -35,7 +35,7 @@ class Character(
         private const val BASE_ENERGY = 50
 
         fun remainingAttributePoints(attributes: Attributes, level: Int): Int {
-            return maxAvailablePoints(level) - attributes.total()
+            return maxAvailablePoints(level) - attributes.pointsSpentSince()
         }
 
         private fun maxAvailablePoints(level: Int = 1): Int {

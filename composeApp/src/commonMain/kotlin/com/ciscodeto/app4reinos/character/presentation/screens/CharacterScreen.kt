@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.unit.dp
@@ -19,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharacterViewModel
-import com.ciscodeto.app4reinos.character.presentation.components.AttributeList
 import com.ciscodeto.app4reinos.character.presentation.components.AttributeRow
 import com.ciscodeto.app4reinos.character.presentation.components.CharacterHeader
 import com.ciscodeto.app4reinos.character.presentation.components.VitalStatSection
@@ -43,6 +45,7 @@ fun CharacterScreen(
     val viewModel = koinViewModel<CharacterViewModel>()
     val mode by viewModel.mode
     val character by viewModel.character
+    val availablePoints by viewModel.availablePoints
 
     val scrollState = rememberScrollState()
 
@@ -71,47 +74,51 @@ fun CharacterScreen(
             CharacterHeader(
                 name = character.name,
                 level = character.level,
-                editable = mode != CharacterScreenMode.VIEW,
-                onNameChange = { viewModel.updateName(it) },
-                onLevelChange = { viewModel.updateLevel(it) }
+                {},
+                {}
             )
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            Text("Pontos disponíveis: ${availablePoints}")
 
             RoundedColumn {
                 AttributeRow(
                     name = "VITALIDADE",
                     value = character.vitality,
+                    icon = Icons.Filled.Favorite,
                     editable = mode != CharacterScreenMode.VIEW,
                     onIncrease = { viewModel.increaseAttribute("VITALIDADE") },
                     onDecrease = { viewModel.decreaseAttribute("VITALIDADE") }
                 )
                 VitalStatSection(
                     currentValue = character.currentHealth,
-                    maxValue = character.vitality * 10,
+                    value = character.vitality * 10,
                     foregroundColor = Color(0xFFC01D20)
                 )
                 AttributeRow(
                     name = "ENERGIA",
                     value = character.energy,
+                    icon = Icons.Filled.Bolt,
                     editable = mode != CharacterScreenMode.VIEW,
                     onIncrease = { viewModel.increaseAttribute("ENERGIA") },
                     onDecrease = { viewModel.decreaseAttribute("ENERGIA") }
                 )
                 VitalStatSection(
                     currentValue = character.currentEnergy,
-                    maxValue = character.energy * 10,
+                    value = character.energy * 10,
                     foregroundColor = Color(0xFF22869A),
                 )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            RoundedColumn { Text("Pontos disponíveis: ${character.availablePoints()}")
-                character.attributes().forEach { (name, value) ->
+            RoundedColumn {
+                character.attributesUi().forEach { (name, value, icon) ->
                     AttributeRow(
                         name = name,
                         value = value,
+                        icon = icon,
                         editable = mode != CharacterScreenMode.VIEW,
                         onIncrease = { viewModel.increaseAttribute(name) },
                         onDecrease = { viewModel.decreaseAttribute(name) }

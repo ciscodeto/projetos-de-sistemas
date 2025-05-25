@@ -2,6 +2,8 @@ package com.ciscodeto.app4reinos.di
 
 import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharactersListViewModel
 import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharacterViewModel
+import com.ciscodeto.sinapsia.application.character.create.CharacterCreationService
+import com.ciscodeto.sinapsia.application.character.create.CharacterCreationServiceImpl
 import com.ciscodeto.sinapsia.application.character.create.CreateCharacter
 import com.ciscodeto.sinapsia.application.character.create.CreateCharacterImpl
 import com.ciscodeto.sinapsia.application.character.find.FindAllCharacters
@@ -22,7 +24,7 @@ import com.ciscodeto.sinapsia.di.sinapsiaModule
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val servicesModule = module {
+val characterServices = module {
     single <FindAllCharacters> {
         FindAllCharactersImpl(get())
     }
@@ -35,6 +37,12 @@ val servicesModule = module {
     single <FindCharacter> {
         FindCharacterImpl(get())
     }
+    single <CharacterCreationService> {
+        CharacterCreationServiceImpl()
+    }
+}
+
+val itemServices = module {
     single <FindAllItems> {
         FindAllItemsImpl(get())
     }
@@ -54,8 +62,8 @@ val viewModelModule = module {
         CharactersListViewModel(get())
     }
     viewModel {
-        CharacterViewModel(get(), get(), get())
+        CharacterViewModel(get(), get(), get(), get())
     }
 }
 
-fun appModules() = listOf(sinapsiaModule, servicesModule, viewModelModule)
+fun appModules() = listOf(sinapsiaModule, characterServices, itemServices, viewModelModule)
