@@ -2,11 +2,14 @@ package com.ciscodeto.app4reinos.character.domain
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.DirectionsRun
+import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Flare
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Shield
+import com.ciscodeto.app4reinos.character.domain.AttributeType.*
 import com.ciscodeto.sinapsia.application.character.repository.CharacterDto
 import com.ciscodeto.sinapsia.domain.attributes.Attributes
 import kotlin.uuid.ExperimentalUuidApi
@@ -20,23 +23,30 @@ data class CharacterUi @OptIn(ExperimentalUuidApi::class) constructor(
     val currentHealth: Int = 50,
     val currentEnergy: Int = 50,
 
-    val vitality: Int = 0,
-    val energy: Int = 0,
-    val strength: Int = 0,
-    val endurance: Int = 0,
-    val dexterity: Int = 0,
-    val intelligence: Int = 0,
-    val wisdom: Int = 0,
-    val charisma: Int = 0
+    val vitality: Int = 5,
+    val energy: Int = 5,
+    val strength: Int = -10,
+    val endurance: Int = -10,
+    val dexterity: Int = -10,
+    val intelligence: Int = -10,
+    val wisdom: Int = -10,
+    val charisma: Int = -10
 ) {
 
+    fun allAttributesUi(): List<AttributeUi> = vitalAttributesUi() + attributesUi()
+
+    private fun vitalAttributesUi(): List<AttributeUi> = listOf(
+        AttributeUi("VITALIDADE", VITALITY, vitality, Icons.Filled.Favorite),
+        AttributeUi("ENERGIA", ENERGY, energy, Icons.Filled.Bolt)
+    )
+
     fun attributesUi(): List<AttributeUi> = listOf(
-        AttributeUi("FORÇA", strength, Icons.Filled.FitnessCenter),
-        AttributeUi("RESISTÊNCIA", endurance, Icons.Filled.Shield),
-        AttributeUi("AGILIDADE", dexterity, Icons.AutoMirrored.Filled.DirectionsRun),
-        AttributeUi("INTELIGÊNCIA", intelligence, Icons.Filled.Lightbulb),
-        AttributeUi("SABEDORIA", wisdom, Icons.Filled.Book),
-        AttributeUi("CARISMA", charisma, Icons.Filled.Flare)
+        AttributeUi("FORÇA", STRENGTH, strength, Icons.Filled.FitnessCenter),
+        AttributeUi("RESISTÊNCIA", ENDURANCE, endurance, Icons.Filled.Shield),
+        AttributeUi("AGILIDADE", DEXTERITY, dexterity, Icons.AutoMirrored.Filled.DirectionsRun),
+        AttributeUi("INTELIGÊNCIA", INTELLIGENCE, intelligence, Icons.Filled.Lightbulb),
+        AttributeUi("SABEDORIA", WISDOM, wisdom, Icons.Filled.Book),
+        AttributeUi("CARISMA", CHARISMA, charisma, Icons.Filled.Flare)
     )
 
     fun attributes(): Attributes = Attributes(
@@ -67,31 +77,31 @@ data class CharacterUi @OptIn(ExperimentalUuidApi::class) constructor(
         charisma = character.attributes.charisma
     )
 
-    fun getAttribute(name: String): Int {
-        return when (name.lowercase()) {
-            "vitalidade" -> vitality
-            "energia" -> energy
-            "força" -> strength
-            "resistência" -> endurance
-            "agilidade" -> dexterity
-            "inteligência" -> intelligence
-            "sabedoria" -> wisdom
-            "carisma" -> charisma
+    fun getAttribute(attributeType: AttributeType): Int {
+        return when (attributeType) {
+            VITALITY -> vitality
+            ENERGY -> energy
+            STRENGTH -> strength
+            ENDURANCE -> endurance
+            DEXTERITY -> dexterity
+            INTELLIGENCE -> intelligence
+            WISDOM -> wisdom
+            CHARISMA -> charisma
             else -> 0
         }
     }
 
     @OptIn(ExperimentalUuidApi::class)
-    fun setAttribute(name: String, value: Int): CharacterUi {
-        return when (name.lowercase()) {
-            "vitalidade" -> copy(vitality = value)
-            "energia" -> copy(energy = value)
-            "força" -> copy(strength = value)
-            "resistência" -> copy(endurance = value)
-            "agilidade" -> copy(dexterity = value)
-            "inteligência" -> copy(intelligence = value)
-            "sabedoria" -> copy(wisdom = value)
-            "carisma" -> copy(charisma = value)
+    fun setAttribute(attributeType: AttributeType, value: Int): CharacterUi {
+        return when (attributeType) {
+            VITALITY -> copy(vitality = value)
+            ENERGY -> copy(energy = value)
+            STRENGTH -> copy(strength = value)
+            ENDURANCE -> copy(endurance = value)
+            DEXTERITY -> copy(dexterity = value)
+            INTELLIGENCE -> copy(intelligence = value)
+            WISDOM -> copy(wisdom = value)
+            CHARISMA -> copy(charisma = value)
             else -> this
         }
     }

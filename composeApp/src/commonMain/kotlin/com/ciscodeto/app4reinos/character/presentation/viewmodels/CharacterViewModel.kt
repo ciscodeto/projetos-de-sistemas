@@ -3,6 +3,7 @@ package com.ciscodeto.app4reinos.character.presentation.viewmodels
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ciscodeto.app4reinos.character.domain.AttributeType
 import com.ciscodeto.app4reinos.character.domain.CharacterUi
 import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreenMode
 import com.ciscodeto.sinapsia.application.character.create.CharacterCreationService
@@ -23,7 +24,8 @@ class CharacterViewModel(
 ) : ViewModel() {
     val mode = mutableStateOf(CharacterScreenMode.VIEW)
     val character = mutableStateOf(CharacterUi(id = null))
-    val availablePoints = mutableStateOf(0)
+    private val originalAttributes = mutableStateOf(character.value.allAttributesUi())
+    val availablePoints = mutableStateOf(30)
 
     fun init(characterId: Uuid?) {
         if (characterId == null) {
@@ -33,6 +35,9 @@ class CharacterViewModel(
             mode.value = CharacterScreenMode.VIEW
             findCharacterById(characterId)
         }
+        originalAttributes.value = character.value.allAttributesUi()
+        availablePoints.value = characterCreationService
+            .getRemainingPoints(character.value.attributes(), character.value.level)
     }
 
     private fun findCharacterById(id: Uuid) {
@@ -47,23 +52,26 @@ class CharacterViewModel(
 
     fun updateLevel(newLevel: Int) {
         character.value = character.value.copy(level = newLevel)
+        availablePoints.value = characterCreationService
+            .getRemainingPoints(character.value.attributes(), newLevel)
     }
 
-    fun increaseAttribute(attribute: String) {
-        val char = character.value
-        if (characterCreationService.getRemainingPoints(char.attributes(), char.level) > 0) {
-            val updatedValue = char.getAttribute(attribute) + 1
-            character.value = char.setAttribute(attribute, updatedValue)
+    fun updateAttribute(attributeType: AttributeType, newValue: Int ) {
+        val updatedValue = character.value.getAttribute(attributeType) + newValue
+        val canIncrease = newValue > 0 && newValue <= availablePoints.value
+        val canDecrease = newValue < 0 && updatedValue >= originalAttributes.value.first { it.type == attributeType }.value
+        if (canIncrease || canDecrease) {
+            character.value = character.value.setAttribute(attributeType, updatedValue)
+            availablePoints.value -= newValue
         }
     }
 
-    fun decreaseAttribute(attribute: String) {
-        val char = character.value
-        val currentValue = char.getAttribute(attribute)
-        if (currentValue > 0) {
-            val updatedValue = currentValue - 1
-            character.value = char.setAttribute(attribute, updatedValue)
-        }
+    fun increaseAttribute(attributeType: AttributeType) {
+        updateAttribute(attributeType, 1)
+    }
+
+    fun decreaseAttribute(attributeType: AttributeType) {
+        updateAttribute(attributeType, -1)
     }
 
     fun updateCharacter() {

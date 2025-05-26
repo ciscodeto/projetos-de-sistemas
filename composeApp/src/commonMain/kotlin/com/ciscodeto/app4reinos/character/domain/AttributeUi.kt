@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 data class AttributeUi(
     val name: String,
+    val type: AttributeType,
     val value: Int,
     val icon: ImageVector
 )

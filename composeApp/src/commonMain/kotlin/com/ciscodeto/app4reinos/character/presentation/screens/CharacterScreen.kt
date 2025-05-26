@@ -17,10 +17,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import com.ciscodeto.app4reinos.character.domain.AttributeType
+import com.ciscodeto.app4reinos.character.domain.AttributeType.*
 import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharacterViewModel
 import com.ciscodeto.app4reinos.character.presentation.components.AttributeRow
 import com.ciscodeto.app4reinos.character.presentation.components.CharacterHeaderView
@@ -50,7 +53,9 @@ fun CharacterScreen(
 
     val scrollState = rememberScrollState()
 
-    viewModel.init(characterId)
+    LaunchedEffect(characterId) {
+        viewModel.init(characterId)
+    }
 
     ReinosScaffold(
         topBar = {
@@ -88,7 +93,7 @@ fun CharacterScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text("Pontos disponíveis: ${availablePoints}")
+            Text("Pontos disponíveis: $availablePoints")
 
             RoundedColumn {
                 AttributeRow(
@@ -96,8 +101,8 @@ fun CharacterScreen(
                     value = character.vitality,
                     icon = Icons.Filled.Favorite,
                     editable = mode != CharacterScreenMode.VIEW,
-                    onIncrease = { viewModel.increaseAttribute("VITALIDADE") },
-                    onDecrease = { viewModel.decreaseAttribute("VITALIDADE") }
+                    onIncrease = { viewModel.increaseAttribute(VITALITY) },
+                    onDecrease = { viewModel.decreaseAttribute(VITALITY) }
                 )
                 VitalStatSection(
                     currentValue = character.currentHealth,
@@ -109,8 +114,8 @@ fun CharacterScreen(
                     value = character.energy,
                     icon = Icons.Filled.Bolt,
                     editable = mode != CharacterScreenMode.VIEW,
-                    onIncrease = { viewModel.increaseAttribute("ENERGIA") },
-                    onDecrease = { viewModel.decreaseAttribute("ENERGIA") }
+                    onIncrease = { viewModel.increaseAttribute(ENERGY) },
+                    onDecrease = { viewModel.decreaseAttribute(ENERGY) }
                 )
                 VitalStatSection(
                     currentValue = character.currentEnergy,
@@ -122,14 +127,14 @@ fun CharacterScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             RoundedColumn {
-                character.attributesUi().forEach { (name, value, icon) ->
+                character.attributesUi().forEach { (name, type, value, icon) ->
                     AttributeRow(
                         name = name,
                         value = value,
                         icon = icon,
                         editable = mode != CharacterScreenMode.VIEW,
-                        onIncrease = { viewModel.increaseAttribute(name) },
-                        onDecrease = { viewModel.decreaseAttribute(name) }
+                        onIncrease = { viewModel.increaseAttribute(type) },
+                        onDecrease = { viewModel.decreaseAttribute(type) }
                     )
                 } }
 

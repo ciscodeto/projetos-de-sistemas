@@ -21,9 +21,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -69,6 +75,15 @@ fun EditableCharacterHeader(
     onNameChange: (String) -> Unit,
     onLevelChange: (Int) -> Unit,
 ) {
+    var inputLevel by remember { mutableStateOf(level.toString()) }
+    var hasFocus by remember { mutableStateOf(true) }
+
+    LaunchedEffect(level) {
+        if (level.toString() != inputLevel) {
+            inputLevel = level.toString()
+        }
+    }
+
     CharacterHeaderBase(
         name = { modifier ->
             TextInputField(
@@ -79,12 +94,22 @@ fun EditableCharacterHeader(
         },
         level = { modifier ->
             NumberInputField(
-                value = level.toString(),
+                value = inputLevel,
                 onValueChange = { value ->
-                    val intValue = value.toIntOrNull()
-                    if (intValue != null) onLevelChange(intValue)
+                    inputLevel = value
                 },
-                modifier = modifier.fillMaxWidth()
+                modifier = modifier
+                    .fillMaxWidth()
+                    .onFocusChanged { focusState ->
+                        if (hasFocus && !focusState.isFocused) {
+                            val parsed = inputLevel.toIntOrNull()
+                            if (parsed != null) {
+                                onLevelChange(parsed)
+                            } else {
+                                inputLevel = level.toString()
+                            }
+                        }
+                        hasFocus = focusState.isFocused },
             )
         }
     )
