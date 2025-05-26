@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ciscodeto.app4reinos.core.components.inputFields.NumberInputField
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AttributeRow(
     name: String,
@@ -58,7 +57,7 @@ fun AttributeRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            if (true) {
+            if (currentValue != null) {
                 NumberInputField(
                     currentValue.toString(),
                     onValueChange = onCurrentValueChange
@@ -93,14 +92,6 @@ fun AttributeCounter(
                 tint = MaterialTheme.colorScheme.primary
             )}
         )
-//        Text(
-//            text = value.toString(),
-//            color = Color(0xFFD6BFA1),
-//            modifier = Modifier
-//                .padding(horizontal = 8.dp)
-//                .size(24.dp),
-//            textAlign = TextAlign.Center,
-//        )
         NumberInputField(value = value.toString(), onValueChange = onValueChange)
         StyledIconButton(
             onClick = onIncrease,

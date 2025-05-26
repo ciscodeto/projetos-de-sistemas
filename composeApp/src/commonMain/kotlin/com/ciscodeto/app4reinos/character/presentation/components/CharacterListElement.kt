@@ -24,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @Composable
 fun CharacterListElement(
@@ -58,7 +60,9 @@ fun CharacterListElement(
                         .padding(8.dp)
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                Column {
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
                     Text(
                         text = name,
                         fontSize = 18.sp,
@@ -80,3 +84,10 @@ fun CharacterListElement(
         }
     }
 }
+
+@OptIn(ExperimentalUuidApi::class)
+data class ElementUi(
+    val name: String,
+    val level: Int,
+    val id: Uuid,
+)

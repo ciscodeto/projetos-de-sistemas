@@ -84,16 +84,7 @@ class CharacterViewModel(
                     level = char.level,
                     experience = 1,
                     gold = 100,
-                    attributes = Attributes(
-                        vitality = char.vitality,
-                        energy = char.energy,
-                        strength = char.strength,
-                        endurance = char.endurance,
-                        dexterity = char.dexterity,
-                        intelligence = char.intelligence,
-                        wisdom = char.wisdom,
-                        charisma = char.charisma
-                    ),
+                    attributes = char.attributes(),
                     description = "Null",
                     id = char.id!!,
                     currentHealth = char.currentHealth,
@@ -115,16 +106,7 @@ class CharacterViewModel(
                     gold = 100,
                     currentEnergy = char.currentEnergy,
                     currentHealth = char.currentHealth,
-                    attributes = Attributes(
-                        vitality = char.vitality,
-                        energy = char.energy,
-                        strength = char.strength,
-                        endurance = char.endurance,
-                        dexterity = char.dexterity,
-                        intelligence = char.intelligence,
-                        wisdom = char.wisdom,
-                        charisma = char.charisma
-                    ),
+                    attributes = char.attributes(),
                     description = "Null",
                 )
             )
