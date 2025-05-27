@@ -101,6 +101,8 @@ fun CharacterScreen(
                     value = character.vitality,
                     icon = Icons.Filled.Favorite,
                     editable = mode != CharacterScreenMode.VIEW,
+                    currentValue = character.currentHealth,
+                    onValueChange = { viewModel.updateAttribute(VITALITY, it) },
                     onIncrease = { viewModel.increaseAttribute(VITALITY) },
                     onDecrease = { viewModel.decreaseAttribute(VITALITY) }
                 )
@@ -114,6 +116,7 @@ fun CharacterScreen(
                     value = character.energy,
                     icon = Icons.Filled.Bolt,
                     editable = mode != CharacterScreenMode.VIEW,
+                    onValueChange = { viewModel.updateAttribute(ENERGY, it) },
                     onIncrease = { viewModel.increaseAttribute(ENERGY) },
                     onDecrease = { viewModel.decreaseAttribute(ENERGY) }
                 )
@@ -133,6 +136,7 @@ fun CharacterScreen(
                         value = value,
                         icon = icon,
                         editable = mode != CharacterScreenMode.VIEW,
+                        onValueChange = { viewModel.updateAttribute(type, it) },
                         onIncrease = { viewModel.increaseAttribute(type) },
                         onDecrease = { viewModel.decreaseAttribute(type) }
                     )

@@ -18,9 +18,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
@@ -35,11 +41,24 @@ fun AttributeRow(
     modifier: Modifier = Modifier,
     editable: Boolean = false,
     icon: ImageVector,
-    onValueChange: (String) -> Unit = {},
-    onCurrentValueChange: (String) -> Unit = {},
+    onValueChange: (Int) -> Unit = {},
+    onCurrentValueChange: (Int) -> Unit = {},
     onIncrease: () -> Unit = {},
     onDecrease: () -> Unit = {}
 ) {
+    var inputValue by remember { mutableStateOf(value.toString()) }
+    var inputCurrentValue by remember { mutableStateOf(currentValue.toString()) }
+
+    var hasValueFocus by remember { mutableStateOf(false) }
+    var hasCurrentValueFocus by remember { mutableStateOf(false) }
+
+    LaunchedEffect(value) {
+        inputValue = value.toString()
+    }
+    LaunchedEffect(currentValue, hasCurrentValueFocus) {
+        inputCurrentValue = currentValue?.toString().orEmpty()
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -59,14 +78,34 @@ fun AttributeRow(
         ) {
             if (currentValue != null) {
                 NumberInputField(
-                    currentValue.toString(),
-                    onValueChange = onCurrentValueChange
+                    value = inputCurrentValue,
+                    onValueChange = { inputCurrentValue = it },
+                    modifier = modifier
+                        .onFocusChanged { focusState ->
+                            if (hasCurrentValueFocus && !focusState.isFocused) {
+                                val parsed = inputCurrentValue.toIntOrNull()
+                                if (parsed != null)
+                                    onCurrentValueChange(parsed - value)
+                                inputCurrentValue = currentValue.toString()
+                            }
+                            hasCurrentValueFocus = focusState.isFocused
+                        },
                 )
             }
-            AttributeCounter(value = value,
-                onValueChange = onValueChange,
+            AttributeCounter(value = inputValue,
+                onValueChange = { inputValue = it },
                 onIncrease = onIncrease,
-                onDecrease = onDecrease
+                onDecrease = onDecrease,
+                modifier = modifier
+                    .onFocusChanged { focusState ->
+                        if (hasValueFocus && !focusState.isFocused) {
+                            val parsed = inputValue.toIntOrNull()
+                            if (parsed != null)
+                                onValueChange(parsed - value)
+                            inputValue = value.toString()
+                        }
+                        hasValueFocus = focusState.isFocused
+                    }
             )
         }
     }
@@ -74,7 +113,7 @@ fun AttributeRow(
 
 @Composable
 fun AttributeCounter(
-    value: Int,
+    value: String,
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit = {},
     onIncrease: () -> Unit = {},
@@ -92,7 +131,11 @@ fun AttributeCounter(
                 tint = MaterialTheme.colorScheme.primary
             )}
         )
-        NumberInputField(value = value.toString(), onValueChange = onValueChange)
+        NumberInputField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = modifier
+        )
         StyledIconButton(
             onClick = onIncrease,
             icon = { Icon(

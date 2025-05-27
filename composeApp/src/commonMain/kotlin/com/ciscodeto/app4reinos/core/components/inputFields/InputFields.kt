@@ -37,11 +37,11 @@ fun NumberInputField(
         BasicTextField(
             value = value,
             onValueChange = { newValue ->
-                if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
+                if (newValue.all { it.isDigit() || newValue.first() == '-' } || newValue.isEmpty()) {
                     onValueChange(newValue)
                 }
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             singleLine = true,
             textStyle = MaterialTheme.typography.bodyLarge.copy(
                 color = Color(0xFFD6BFA1),
