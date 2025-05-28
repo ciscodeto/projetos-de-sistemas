@@ -85,7 +85,7 @@ fun AttributeRow(
                             if (hasCurrentValueFocus && !focusState.isFocused) {
                                 val parsed = inputCurrentValue.toIntOrNull()
                                 if (parsed != null)
-                                    onCurrentValueChange(parsed - value)
+                                    onCurrentValueChange(parsed)
                                 inputCurrentValue = currentValue.toString()
                             }
                             hasCurrentValueFocus = focusState.isFocused

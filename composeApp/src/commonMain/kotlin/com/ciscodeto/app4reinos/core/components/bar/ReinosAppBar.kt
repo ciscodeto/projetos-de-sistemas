@@ -1,5 +1,6 @@
 package com.ciscodeto.app4reinos.core.components.bar
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,6 +29,7 @@ fun ReinosAppBar(
     title: String = "Home",
     canNavigateBack: Boolean,
     navigateUp: () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
     CenterAlignedTopAppBar(
@@ -58,6 +60,7 @@ fun ReinosAppBar(
                 }
             }
         },
+        actions = actions,
         modifier = Modifier
             .drawBehind {
                 drawLine(

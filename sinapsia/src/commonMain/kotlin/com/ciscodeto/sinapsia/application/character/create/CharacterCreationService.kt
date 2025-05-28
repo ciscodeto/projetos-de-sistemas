@@ -6,4 +6,6 @@ interface CharacterCreationService {
     fun getRemainingPoints(attributes: Attributes, level: Int): Int
     fun getMaxHealth(vitality: Int): Int
     fun getMaxEnergy(energy: Int): Int
+    fun getHealthPerPoint(): Int
+    fun getEnergyPerPoint(): Int
 }

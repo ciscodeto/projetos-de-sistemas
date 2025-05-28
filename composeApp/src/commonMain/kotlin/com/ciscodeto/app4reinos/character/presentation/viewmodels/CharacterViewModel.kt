@@ -1,18 +1,19 @@
 package com.ciscodeto.app4reinos.character.presentation.viewmodels
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ciscodeto.app4reinos.character.domain.AttributeType
 import com.ciscodeto.app4reinos.character.domain.CharacterUi
-import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreenMode
+import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreenMode.*
 import com.ciscodeto.sinapsia.application.character.create.CharacterCreationService
 import com.ciscodeto.sinapsia.application.character.create.CreateCharacter
+import com.ciscodeto.sinapsia.application.character.delete.DeleteCharacter
 import com.ciscodeto.sinapsia.application.character.find.FindCharacter
 import com.ciscodeto.sinapsia.application.character.update.UpdateCharacter
-import com.ciscodeto.sinapsia.domain.attributes.Attributes
 import kotlinx.coroutines.launch
-import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(kotlin.uuid.ExperimentalUuidApi::class)
@@ -20,49 +21,62 @@ class CharacterViewModel(
     private val characterCreationService: CharacterCreationService,
     private val createCharacter: CreateCharacter,
     private val updateCharacter: UpdateCharacter,
+    private val deleteCharacter: DeleteCharacter,
     private val findCharacter: FindCharacter,
 ) : ViewModel() {
-    val mode = mutableStateOf(CharacterScreenMode.VIEW)
-    val character = mutableStateOf(CharacterUi(id = null))
-    private val originalAttributes = mutableStateOf(character.value.allAttributesUi())
-    val availablePoints = mutableStateOf(30)
+    var mode by mutableStateOf(VIEW)
+    var character by mutableStateOf(CharacterUi(id = null))
+    private var originalAttributes by mutableStateOf(character.attributes)
+
+    var availablePoints by mutableStateOf(30)
+    var healthPerPoint = 10
+    var energyPerPoint = 10
 
     fun init(characterId: Uuid?) {
         if (characterId == null) {
-            mode.value = CharacterScreenMode.CREATE
-            character.value = CharacterUi(id = null)
+            mode = CREATE
+            character = CharacterUi(id = null)
+            setupFrom(character)
         } else {
-            mode.value = CharacterScreenMode.VIEW
+            mode = VIEW
             findCharacterById(characterId)
         }
-        originalAttributes.value = character.value.allAttributesUi()
-        availablePoints.value = characterCreationService
-            .getRemainingPoints(character.value.attributes(), character.value.level)
     }
 
     private fun findCharacterById(id: Uuid) {
         viewModelScope.launch {
-            character.value = findCharacter.findById(id)?.let { CharacterUi().fromDto(it) } ?: CharacterUi()
+            character = findCharacter.findById(id)?.let { CharacterUi().fromDto(it) } ?: CharacterUi()
+            setupFrom(character)
         }
     }
 
+    private fun setupFrom(char: CharacterUi) {
+        originalAttributes = char.attributes
+        availablePoints = characterCreationService.getRemainingPoints(char.attributes(), char.level)
+        healthPerPoint = characterCreationService.getEnergyPerPoint()
+        energyPerPoint = characterCreationService.getHealthPerPoint()
+    }
+
+
     fun updateName(newName: String) {
-        character.value = character.value.copy(name = newName)
+        character = character.copy(name = newName)
     }
 
     fun updateLevel(newLevel: Int) {
-        character.value = character.value.copy(level = newLevel)
-        availablePoints.value = characterCreationService
-            .getRemainingPoints(character.value.attributes(), newLevel)
+        if (newLevel < 0) return
+        if (newLevel < character.level)
+            character = character.copy(attributes = originalAttributes)
+        availablePoints = characterCreationService
+            .getRemainingPoints(character.attributes(), newLevel)
     }
 
     fun updateAttribute(attributeType: AttributeType, newValue: Int ) {
-        val updatedValue = character.value.getAttribute(attributeType) + newValue
-        val canIncrease = newValue > 0 && newValue <= availablePoints.value
-        val canDecrease = newValue < 0 && updatedValue >= originalAttributes.value.first { it.type == attributeType }.value
+        val updatedValue = character.getAttribute(attributeType) + newValue
+        val canIncrease = newValue in 1..availablePoints
+        val canDecrease = newValue < 0 && updatedValue >= originalAttributes.getAttribute(attributeType)
         if (canIncrease || canDecrease) {
-            character.value = character.value.setAttribute(attributeType, updatedValue)
-            availablePoints.value -= newValue
+            character = character.setAttribute(attributeType, updatedValue)
+            availablePoints -= newValue
         }
     }
 
@@ -75,7 +89,7 @@ class CharacterViewModel(
     }
 
     fun updateCharacter() {
-        val char = character.value
+        val char = character
         viewModelScope.launch {
             updateCharacter.update(
                 UpdateCharacter.RequestModel(
@@ -95,7 +109,7 @@ class CharacterViewModel(
     }
 
     fun createCharacter() {
-        val char = character.value
+        val char = character
         viewModelScope.launch {
             createCharacter.create(
                 CreateCharacter.RequestModel(
@@ -110,6 +124,44 @@ class CharacterViewModel(
                     description = "Null",
                 )
             )
+        }
+    }
+
+    fun deleteCharacter() {
+        val char = character
+        viewModelScope.launch {
+            deleteCharacter.delete(char.id!!)
+        }
+    }
+
+    fun updateCurrentHealth(amount: Int) {
+        var newHealth = amount
+        val health = character.attributes.vitality
+        
+        if (newHealth < 0) return
+        if (newHealth > energyPerPoint * health)
+            newHealth = energyPerPoint * health
+        
+        character = character.copy(currentHealth = newHealth)
+    }
+
+    fun updateCurrentEnergy(amount: Int) {
+        var newEnergy = amount
+        val energy = character.attributes.energy
+        
+        if (newEnergy < 0) return
+        if (newEnergy > healthPerPoint * energy) {
+            newEnergy = healthPerPoint * energy
+        }
+        
+        character = character.copy(currentEnergy = newEnergy)
+    }
+
+    fun switchMode() {
+        mode = when (mode) {
+            VIEW -> EDIT
+            EDIT -> VIEW
+            CREATE -> VIEW
         }
     }
 }

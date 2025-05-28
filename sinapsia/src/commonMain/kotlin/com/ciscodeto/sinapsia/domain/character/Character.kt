@@ -43,11 +43,11 @@ class Character(
         }
 
         fun calculateMaxEnergy(energy: Int): Int {
-            return energy * ENERGY_PER_POINTS + BASE_ENERGY
+            return energy * ENERGY_PER_POINTS
         }
 
         fun calculateMaxHealth(vitality: Int): Int {
-            return vitality * HEALTH_PER_POINTS + BASE_HEALTH
+            return vitality * HEALTH_PER_POINTS
         }
     }
 

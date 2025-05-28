@@ -6,6 +6,8 @@ import com.ciscodeto.sinapsia.application.character.create.CharacterCreationServ
 import com.ciscodeto.sinapsia.application.character.create.CharacterCreationServiceImpl
 import com.ciscodeto.sinapsia.application.character.create.CreateCharacter
 import com.ciscodeto.sinapsia.application.character.create.CreateCharacterImpl
+import com.ciscodeto.sinapsia.application.character.delete.DeleteCharacter
+import com.ciscodeto.sinapsia.application.character.delete.DeleteCharacterImpl
 import com.ciscodeto.sinapsia.application.character.find.FindAllCharacters
 import com.ciscodeto.sinapsia.application.character.find.FindAllCharactersImpl
 import com.ciscodeto.sinapsia.application.character.find.FindCharacter
@@ -33,6 +35,9 @@ val characterServices = module {
     }
     single <UpdateCharacter> {
         UpdateCharacterImpl(get())
+    }
+    single <DeleteCharacter> {
+        DeleteCharacterImpl(get())
     }
     single <FindCharacter> {
         FindCharacterImpl(get())
@@ -62,7 +67,7 @@ val viewModelModule = module {
         CharactersListViewModel(get())
     }
     viewModel {
-        CharacterViewModel(get(), get(), get(), get())
+        CharacterViewModel(get(), get(), get(), get(), get())
     }
 }
 

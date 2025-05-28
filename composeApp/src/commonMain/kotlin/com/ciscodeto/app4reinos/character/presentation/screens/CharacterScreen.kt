@@ -1,8 +1,8 @@
 package com.ciscodeto.app4reinos.character.presentation.screens
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,25 +12,32 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavController
-import com.ciscodeto.app4reinos.character.domain.AttributeType
 import com.ciscodeto.app4reinos.character.domain.AttributeType.*
 import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharacterViewModel
 import com.ciscodeto.app4reinos.character.presentation.components.AttributeRow
 import com.ciscodeto.app4reinos.character.presentation.components.CharacterHeaderView
 import com.ciscodeto.app4reinos.character.presentation.components.EditableCharacterHeader
 import com.ciscodeto.app4reinos.character.presentation.components.VitalStatSection
+import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreenMode.*
 import com.ciscodeto.app4reinos.core.components.bar.ReinosAppBar
 import com.ciscodeto.app4reinos.core.components.containers.RoundedColumn
+import com.ciscodeto.app4reinos.core.components.dropdownMenu.DropdownMenuInfo
+import com.ciscodeto.app4reinos.core.components.dropdownMenu.DropdownOptions
 import com.ciscodeto.app4reinos.core.components.layout.ReinosScaffold
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.uuid.ExperimentalUuidApi
@@ -47,10 +54,14 @@ fun CharacterScreen(
     characterId: Uuid? = null
 ) {
     val viewModel = koinViewModel<CharacterViewModel>()
-    val mode by viewModel.mode
-    val character by viewModel.character
-    val availablePoints by viewModel.availablePoints
+    val mode = viewModel.mode
+    val character = viewModel.character
+    val availablePoints = viewModel.availablePoints
 
+    val switchModeText = if (mode == VIEW) "Editar Personagem" else "Cancelar edição"
+    val switchModeIcon = if (mode == VIEW) Icons.Filled.Cancel else Icons.Filled.Edit
+
+    val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
 
     LaunchedEffect(characterId) {
@@ -58,15 +69,48 @@ fun CharacterScreen(
     }
 
     ReinosScaffold(
+        modifier = Modifier
+            .clickable(indication = null, interactionSource = remember { MutableInteractionSource() }
+        ) { focusManager.clearFocus() },
         topBar = {
             ReinosAppBar(
                 title = when (mode) {
-                    CharacterScreenMode.VIEW -> "Personagem"
-                    CharacterScreenMode.EDIT -> "Editar Personagem"
-                    CharacterScreenMode.CREATE -> "Criar Personagem"
+                    VIEW -> "Personagem"
+                    EDIT -> "Editar Personagem"
+                    CREATE -> "Criar Personagem"
                 },
                 canNavigateBack = true,
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                actions = { DropdownOptions(
+                    items = if (mode != CREATE) {
+                        listOf(
+                            DropdownMenuInfo(
+                                text = switchModeText,
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = switchModeIcon,
+                                        contentDescription = "$switchModeText Button",
+                                        tint = Color(0xFFD6BFA1)
+                                    )
+                                },
+                                onClick = { viewModel.switchMode() }
+                            ),
+                            DropdownMenuInfo(
+                                text = "Delete Character",
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Filled.Delete,
+                                        contentDescription = "Delete Character Button",
+                                        tint = Color(0xFFD6BFA1)
+                                    )
+                                },
+                                onClick = { viewModel.switchMode() }
+                            )
+                        )
+                    } else {
+                        emptyList()
+                    }
+                ) }
             )
         }
     ) { innerPadding ->
@@ -77,7 +121,7 @@ fun CharacterScreen(
                 .padding(16.dp)
                 .verticalScroll(scrollState)
         ) {
-            if (mode == CharacterScreenMode.VIEW) {
+            if (mode == VIEW) {
                 CharacterHeaderView(
                     name = character.name,
                     level = character.level,
@@ -98,31 +142,34 @@ fun CharacterScreen(
             RoundedColumn {
                 AttributeRow(
                     name = "VITALIDADE",
-                    value = character.vitality,
-                    icon = Icons.Filled.Favorite,
-                    editable = mode != CharacterScreenMode.VIEW,
+                    value = character.attributes.vitality,
                     currentValue = character.currentHealth,
+                    icon = Icons.Filled.Favorite,
+                    editable = mode != VIEW,
                     onValueChange = { viewModel.updateAttribute(VITALITY, it) },
+                    onCurrentValueChange = { viewModel.updateCurrentHealth(it) },
                     onIncrease = { viewModel.increaseAttribute(VITALITY) },
                     onDecrease = { viewModel.decreaseAttribute(VITALITY) }
                 )
                 VitalStatSection(
                     currentValue = character.currentHealth,
-                    value = character.vitality * 10,
+                    value = viewModel.healthPerPoint * character.attributes.vitality,
                     foregroundColor = Color(0xFFC01D20)
                 )
                 AttributeRow(
                     name = "ENERGIA",
-                    value = character.energy,
+                    value = character.attributes.energy,
+                    currentValue = character.currentEnergy,
                     icon = Icons.Filled.Bolt,
-                    editable = mode != CharacterScreenMode.VIEW,
+                    editable = mode != VIEW,
                     onValueChange = { viewModel.updateAttribute(ENERGY, it) },
+                    onCurrentValueChange = { viewModel.updateCurrentEnergy(it) },
                     onIncrease = { viewModel.increaseAttribute(ENERGY) },
                     onDecrease = { viewModel.decreaseAttribute(ENERGY) }
                 )
                 VitalStatSection(
                     currentValue = character.currentEnergy,
-                    value = character.energy * 10,
+                    value = viewModel.energyPerPoint * character.attributes.energy,
                     foregroundColor = Color(0xFF22869A),
                 )
             }
@@ -135,7 +182,7 @@ fun CharacterScreen(
                         name = name,
                         value = value,
                         icon = icon,
-                        editable = mode != CharacterScreenMode.VIEW,
+                        editable = mode != VIEW,
                         onValueChange = { viewModel.updateAttribute(type, it) },
                         onIncrease = { viewModel.increaseAttribute(type) },
                         onDecrease = { viewModel.decreaseAttribute(type) }
@@ -144,7 +191,7 @@ fun CharacterScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (mode == CharacterScreenMode.CREATE) {
+            if (mode == CREATE) {
                 Button(
                     onClick = { viewModel.createCharacter()
                                 navController.navigateUp()},
@@ -153,7 +200,7 @@ fun CharacterScreen(
                     Text("Salvar Personagem")
                 }
             }
-            if (mode == CharacterScreenMode.EDIT) {
+            if (mode == EDIT) {
                 Button(
                     onClick = { viewModel.updateCharacter()
                         navController.navigateUp()},
@@ -162,18 +209,6 @@ fun CharacterScreen(
                     Text("Salvar Personagem")
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun CharacterOptions() {
-    Row(
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        repeat(3) {
-            RoundedColumn { Text("Test") }
         }
     }
 }

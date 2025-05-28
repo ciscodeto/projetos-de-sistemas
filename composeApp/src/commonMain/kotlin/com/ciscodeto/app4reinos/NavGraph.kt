@@ -12,8 +12,8 @@ import com.ciscodeto.app4reinos.NavDestinations.*
 import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreen
 import com.ciscodeto.app4reinos.character.presentation.screens.CharactersListScreen
 import com.ciscodeto.app4reinos.home.HomeScreen
-import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreen
 import com.ciscodeto.app4reinos.item.ItemsListScreen
+import com.ciscodeto.app4reinos.scene.presentation.SceneScreen
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -44,6 +44,8 @@ fun NavGraph(
             }
 
             composable<ItemsListScreen> { ItemsListScreen(navController) }
+
+            composable<SceneScreen> { SceneScreen(navController) }
         }
     }
 }

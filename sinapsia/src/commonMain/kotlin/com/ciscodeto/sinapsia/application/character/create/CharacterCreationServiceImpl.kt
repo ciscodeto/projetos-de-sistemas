@@ -16,4 +16,8 @@ class CharacterCreationServiceImpl : CharacterCreationService {
     override fun getMaxEnergy(energy: Int): Int {
         return Character.calculateMaxEnergy(energy)
     }
+
+    override fun getHealthPerPoint(): Int = Character.calculateMaxHealth(1)
+
+    override fun getEnergyPerPoint(): Int = Character.calculateMaxEnergy(1)
 }
