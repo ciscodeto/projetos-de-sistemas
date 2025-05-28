@@ -1,4 +1,4 @@
-# ManagerApp4Reinos
+# Projeto de sistemas
 A ManagerApp!
 This is a Kotlin Multiplatform project targeting Android, iOS, Desktop.
 
