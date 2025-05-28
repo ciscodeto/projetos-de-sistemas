@@ -16,16 +16,21 @@ import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ciscodeto.app4reinos.character.domain.AttributeType.*
 import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharacterViewModel
@@ -34,11 +39,13 @@ import com.ciscodeto.app4reinos.character.presentation.components.CharacterHeade
 import com.ciscodeto.app4reinos.character.presentation.components.EditableCharacterHeader
 import com.ciscodeto.app4reinos.character.presentation.components.VitalStatSection
 import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreenMode.*
+import com.ciscodeto.app4reinos.core.components.ConfirmSelectionDialog
 import com.ciscodeto.app4reinos.core.components.bar.ReinosAppBar
 import com.ciscodeto.app4reinos.core.components.containers.RoundedColumn
 import com.ciscodeto.app4reinos.core.components.dropdownMenu.DropdownMenuInfo
 import com.ciscodeto.app4reinos.core.components.dropdownMenu.DropdownOptions
 import com.ciscodeto.app4reinos.core.components.layout.ReinosScaffold
+import com.ciscodeto.app4reinos.core.ui.events.UiEvent
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -54,18 +61,43 @@ fun CharacterScreen(
     characterId: Uuid? = null
 ) {
     val viewModel = koinViewModel<CharacterViewModel>()
+
     val mode = viewModel.mode
     val character = viewModel.character
     val availablePoints = viewModel.availablePoints
 
     val switchModeText = if (mode == VIEW) "Editar Personagem" else "Cancelar edição"
-    val switchModeIcon = if (mode == VIEW) Icons.Filled.Cancel else Icons.Filled.Edit
+    val switchModeIcon = if (mode == VIEW) Icons.Filled.Edit else Icons.Filled.Cancel
 
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(characterId) {
         viewModel.init(characterId)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.ShowDeleteConfirmation -> {
+                    showDeleteDialog = true
+                }
+                is UiEvent.DeleteConfirmed -> {
+                    showDeleteDialog = false
+                    navController.navigateUp()
+                }
+            }
+        }
+    }
+
+    if (showDeleteDialog) {
+        ConfirmSelectionDialog(
+            title = "Deletar personagem?",
+            message = "Tem certeza que deseja deletar este personagem? Essa ação não pode ser desfeita.",
+            onConfirm = { viewModel.deleteCharacter() },
+            onDismiss = { showDeleteDialog = false }
+        )
     }
 
     ReinosScaffold(
@@ -104,7 +136,7 @@ fun CharacterScreen(
                                         tint = Color(0xFFD6BFA1)
                                     )
                                 },
-                                onClick = { viewModel.switchMode() }
+                                onClick = { viewModel.onDeleteClicked() }
                             )
                         )
                     } else {

@@ -8,11 +8,14 @@ import androidx.lifecycle.viewModelScope
 import com.ciscodeto.app4reinos.character.domain.AttributeType
 import com.ciscodeto.app4reinos.character.domain.CharacterUi
 import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreenMode.*
+import com.ciscodeto.app4reinos.core.ui.events.UiEvent
 import com.ciscodeto.sinapsia.application.character.create.CharacterCreationService
 import com.ciscodeto.sinapsia.application.character.create.CreateCharacter
 import com.ciscodeto.sinapsia.application.character.delete.DeleteCharacter
 import com.ciscodeto.sinapsia.application.character.find.FindCharacter
 import com.ciscodeto.sinapsia.application.character.update.UpdateCharacter
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import kotlin.uuid.Uuid
 
@@ -25,6 +28,9 @@ class CharacterViewModel(
     private val findCharacter: FindCharacter,
 ) : ViewModel() {
     var mode by mutableStateOf(VIEW)
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
+
     var character by mutableStateOf(CharacterUi(id = null))
     private var originalAttributes by mutableStateOf(character.attributes)
 
@@ -131,8 +137,16 @@ class CharacterViewModel(
         val char = character
         viewModelScope.launch {
             deleteCharacter.delete(char.id!!)
+            _uiEvent.emit(UiEvent.DeleteConfirmed)
         }
     }
+
+    fun onDeleteClicked() {
+        viewModelScope.launch {
+            _uiEvent.emit(UiEvent.ShowDeleteConfirmation)
+        }
+    }
+
 
     fun updateCurrentHealth(amount: Int) {
         var newHealth = amount

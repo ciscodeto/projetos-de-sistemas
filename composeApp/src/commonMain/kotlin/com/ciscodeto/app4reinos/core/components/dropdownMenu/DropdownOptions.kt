@@ -42,13 +42,16 @@ fun DropdownOptions(
                 leadingIcon = { Icon(Icons.Outlined.Settings, contentDescription = null) },
                 onClick = {  }
             )
-            HorizontalDivider()
+            if (items.isNotEmpty())
+                HorizontalDivider()
             for (item in items) {
                 DropdownMenuItem(
                     text = { Text(item.text, color = Color(0xFFD6BFA1)) },
                     leadingIcon = item.leadingIcon,
                     trailingIcon = item.trailingIcon,
-                    onClick = item.onClick)
+                    onClick = { item.onClick()
+                        expanded = false }
+                )
             }
         }
     }
