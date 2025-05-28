@@ -13,10 +13,16 @@ sealed interface NavDestinations {
     data object CharactersListScreen : NavDestinations
 
     @Serializable
+    data object ItemScreen : NavDestinations
+
+    @Serializable
     data object ItemsListScreen : NavDestinations
 
     @Serializable
-    data object SceneScreen : NavDestinations
+    data class SceneScreen(val sceneId: String? = null) : NavDestinations
+
+    @Serializable
+    data object SceneListScreen : NavDestinations
 
     @Serializable
     data object SettingsScreen : NavDestinations

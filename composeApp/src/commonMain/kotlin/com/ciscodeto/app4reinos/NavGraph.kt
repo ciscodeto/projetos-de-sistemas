@@ -13,7 +13,7 @@ import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreen
 import com.ciscodeto.app4reinos.character.presentation.screens.CharactersListScreen
 import com.ciscodeto.app4reinos.home.HomeScreen
 import com.ciscodeto.app4reinos.item.ItemsListScreen
-import com.ciscodeto.app4reinos.scene.presentation.SceneScreen
+import com.ciscodeto.app4reinos.scene.presentation.screens.SceneScreen
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -45,7 +45,15 @@ fun NavGraph(
 
             composable<ItemsListScreen> { ItemsListScreen(navController) }
 
-            composable<SceneScreen> { SceneScreen(navController) }
+            composable<SceneScreen> {
+                val args = it.toRoute<SceneScreen>()
+                SceneScreen(
+                    navController = navController,
+                    sceneId = args.sceneId?.let { id -> Uuid.fromByteArray(id.toByteArrayBase64()) }
+                )
+            }
+
+            composable<SceneListScreen> { SceneScreen(navController) }
         }
     }
 }

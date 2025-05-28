@@ -70,10 +70,13 @@ class CharacterViewModel(
 
     fun updateLevel(newLevel: Int) {
         if (newLevel < 0) return
-        if (newLevel < character.level)
+        if (newLevel < character.level) {
             character = character.copy(attributes = originalAttributes)
+            originalAttributes = CharacterUi().attributes
+        }
         availablePoints = characterCreationService
             .getRemainingPoints(character.attributes(), newLevel)
+        character = character.copy(level = newLevel)
     }
 
     fun updateAttribute(attributeType: AttributeType, newValue: Int ) {

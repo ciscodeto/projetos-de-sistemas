@@ -24,8 +24,9 @@ import com.ciscodeto.app4reinos.core.components.layout.ReinosScaffold
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 fun buttons() = mapOf(
+    SceneListScreen to "JOGAR!",
     CharactersListScreen to "PERSONAGENS",
-    ItemsListScreen to "ITENS"
+    ItemsListScreen to "ITENS",
 )
 
 @Composable

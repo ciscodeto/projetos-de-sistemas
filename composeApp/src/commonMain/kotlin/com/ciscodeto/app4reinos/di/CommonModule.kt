@@ -2,6 +2,8 @@ package com.ciscodeto.app4reinos.di
 
 import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharactersListViewModel
 import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharacterViewModel
+import com.ciscodeto.app4reinos.scene.presentation.viewmodels.SceneListViewModel
+import com.ciscodeto.app4reinos.scene.presentation.viewmodels.SceneViewModel
 import com.ciscodeto.sinapsia.application.character.create.CharacterCreationService
 import com.ciscodeto.sinapsia.application.character.create.CharacterCreationServiceImpl
 import com.ciscodeto.sinapsia.application.character.create.CreateCharacter
@@ -62,12 +64,23 @@ val itemServices = module {
     }
 }
 
+val sceneServices = module {
+
+}
+
 val viewModelModule = module {
     viewModel {
         CharactersListViewModel(get())
     }
     viewModel {
         CharacterViewModel(get(), get(), get(), get(), get())
+    }
+
+    viewModel {
+        SceneListViewModel()
+    }
+    viewModel {
+        SceneViewModel()
     }
 }
 
