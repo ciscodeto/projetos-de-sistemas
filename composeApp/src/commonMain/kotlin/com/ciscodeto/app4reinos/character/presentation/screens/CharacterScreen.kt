@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -30,14 +29,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ciscodeto.app4reinos.character.domain.AttributeType.*
 import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharacterViewModel
 import com.ciscodeto.app4reinos.character.presentation.components.AttributeRow
 import com.ciscodeto.app4reinos.character.presentation.components.CharacterHeaderView
 import com.ciscodeto.app4reinos.character.presentation.components.EditableCharacterHeader
-import com.ciscodeto.app4reinos.character.presentation.components.VitalStatSection
+import com.ciscodeto.app4reinos.character.presentation.components.StatBar
 import com.ciscodeto.app4reinos.character.presentation.screens.CharacterScreenMode.*
 import com.ciscodeto.app4reinos.core.components.ConfirmSelectionDialog
 import com.ciscodeto.app4reinos.core.components.bar.ReinosAppBar
@@ -176,6 +174,7 @@ fun CharacterScreen(
                     name = "VITALIDADE",
                     value = character.attributes.vitality,
                     currentValue = character.currentHealth,
+                    currentMaxValue = viewModel.healthPerPoint * character.attributes.vitality,
                     icon = Icons.Filled.Favorite,
                     editable = mode != VIEW,
                     onValueChange = { viewModel.updateAttribute(VITALITY, it) },
@@ -183,15 +182,16 @@ fun CharacterScreen(
                     onIncrease = { viewModel.increaseAttribute(VITALITY) },
                     onDecrease = { viewModel.decreaseAttribute(VITALITY) }
                 )
-                VitalStatSection(
-                    currentValue = character.currentHealth,
-                    value = viewModel.healthPerPoint * character.attributes.vitality,
+                StatBar(
+                    current = character.currentHealth,
+                    total = viewModel.healthPerPoint * character.attributes.vitality,
                     foregroundColor = Color(0xFFC01D20)
                 )
                 AttributeRow(
                     name = "ENERGIA",
                     value = character.attributes.energy,
                     currentValue = character.currentEnergy,
+                    currentMaxValue = viewModel.energyPerPoint * character.attributes.energy,
                     icon = Icons.Filled.Bolt,
                     editable = mode != VIEW,
                     onValueChange = { viewModel.updateAttribute(ENERGY, it) },
@@ -199,9 +199,9 @@ fun CharacterScreen(
                     onIncrease = { viewModel.increaseAttribute(ENERGY) },
                     onDecrease = { viewModel.decreaseAttribute(ENERGY) }
                 )
-                VitalStatSection(
-                    currentValue = character.currentEnergy,
-                    value = viewModel.energyPerPoint * character.attributes.energy,
+                StatBar(
+                    current = character.currentEnergy,
+                    total = viewModel.energyPerPoint * character.attributes.energy,
                     foregroundColor = Color(0xFF22869A),
                 )
             }

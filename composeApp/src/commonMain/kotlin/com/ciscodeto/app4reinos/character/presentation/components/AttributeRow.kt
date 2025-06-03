@@ -38,6 +38,7 @@ fun AttributeRow(
     name: String,
     value: Int,
     currentValue: Int? = null,
+    currentMaxValue: Int? = null,
     modifier: Modifier = Modifier,
     editable: Boolean = false,
     icon: ImageVector,
@@ -90,6 +91,14 @@ fun AttributeRow(
                             }
                             hasCurrentValueFocus = focusState.isFocused
                         },
+                )
+                Text(
+                    text = "/",
+                    color = Color(0xFFD6BFA1),
+                )
+                Text(
+                    text = currentMaxValue.toString(),
+                    color = Color(0xFFD6BFA1)
                 )
             }
             AttributeCounter(value = inputValue,

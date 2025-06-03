@@ -14,15 +14,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun VitalStatSection(
-    value: Int,
-    currentValue: Int,
+fun StatBar(
+    total: Int,
+    current: Int,
     modifier: Modifier = Modifier,
     barHeight: Dp = 8.dp,
     backgroundColor: Color = Color(0x1affffff),
     foregroundColor: Color = Color(0xFFC01D20)
 ) {
-    val healthPercent = (currentValue.toFloat() / value).coerceIn(0f, 1f)
+    val healthPercent = (current.toFloat() / total).coerceIn(0f, 1f)
 
     Box(
         modifier = modifier
