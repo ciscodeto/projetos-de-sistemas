@@ -8,7 +8,7 @@ interface Action {
     val name: String
     val cost: Int
     val requiresTarget: Boolean
-    val isAggressive: Boolean
+    val requiresReaction: Boolean
     /**
      * Quais atributos usar para teste de sucesso da ação
      */

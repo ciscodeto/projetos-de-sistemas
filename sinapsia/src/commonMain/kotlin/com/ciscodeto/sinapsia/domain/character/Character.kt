@@ -17,22 +17,42 @@ class Character(
     val description: String,
     var level: Int,
     var experience: Int,
-    var gold: Int,
-    var currentHealth: Int,
-    var currentEnergy: Int,
+    currentHealth: Int,
+    currentEnergy: Int,
+    gold: Int,
     var attributes: Attributes,
     var attributeModifier: Attributes? = null,
     var inventory: List<Item> = emptyList(),
 ) : Entity<Uuid>(id) {
+    private val maxHealth: Int
+        get() = calculateMaxHealth(attributes.vitality)
+
+    private val maxEnergy: Int
+        get() = calculateMaxEnergy(attributes.energy)
+
+    var currentHealth: Int = currentHealth.coerceIn(0, maxHealth)
+        set(value) {
+            field = value.coerceIn(0, maxHealth)
+        }
+
+    var currentEnergy: Int = currentEnergy.coerceIn(0, maxEnergy)
+        set(value) {
+            field = value.coerceIn(0, maxEnergy)
+        }
+
+    var gold: Int = gold.coerceAtLeast(0)
+        set(value) {
+            field = value.coerceAtLeast(0)
+        }
+
     private var attributePoints: Int
+
     companion object {
         private const val BASE_ATTRIBUTE_POINTS = 30
 
         private const val HEALTH_PER_POINTS = 10
-        private const val BASE_HEALTH = 50
 
         private const val ENERGY_PER_POINTS = 10
-        private const val BASE_ENERGY = 50
 
         fun remainingAttributePoints(attributes: Attributes, level: Int): Int {
             return maxAvailablePoints(level) - attributes.pointsSpentSince()

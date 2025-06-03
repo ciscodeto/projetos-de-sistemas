@@ -8,7 +8,7 @@ class CompositeAction(
     override val name: String,
     override val cost: Int,
     override val requiresTarget: Boolean = true,
-    override val isAggressive: Boolean = true,
+    override val requiresReaction: Boolean = true,
     private val children: List<Action>
 ) : Action {
     override val successAttributes = emptyList<AttributeType>()
