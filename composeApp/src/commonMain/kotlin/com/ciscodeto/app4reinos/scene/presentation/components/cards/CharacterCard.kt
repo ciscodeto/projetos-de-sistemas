@@ -43,9 +43,8 @@ import com.ciscodeto.app4reinos.scene.domain.CharacterUi
 @Composable
 fun CharacterCard(
     character: CharacterUi,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    onRemove: () -> Unit = {},
 ) {
     Box(
         modifier = modifier

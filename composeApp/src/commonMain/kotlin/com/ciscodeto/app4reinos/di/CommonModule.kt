@@ -80,7 +80,7 @@ val viewModelModule = module {
         SceneListViewModel()
     }
     viewModel {
-        SceneViewModel()
+        SceneViewModel(get())
     }
 }
 
