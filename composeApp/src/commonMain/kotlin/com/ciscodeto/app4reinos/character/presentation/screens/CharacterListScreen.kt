@@ -1,5 +1,6 @@
 package com.ciscodeto.app4reinos.character.presentation.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +24,7 @@ import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharactersList
 import com.ciscodeto.app4reinos.character.presentation.components.CharacterListElement
 import com.ciscodeto.app4reinos.core.components.bar.ReinosAppBar
 import com.ciscodeto.app4reinos.core.components.layout.ReinosScaffold
+import com.ciscodeto.app4reinos.core.components.list.TopBorderListContainer
 import com.ciscodeto.app4reinos.toBase64String
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.uuid.ExperimentalUuidApi
@@ -54,20 +56,32 @@ fun CharactersListScreen(
             }
         },
     ) { paddingValues ->
-        LazyColumn(
+        TopBorderListContainer(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 12.dp)
+                .padding(top = 8.dp)
         ) {
-            items(characters) { character ->
-                CharacterListElement(
-                    name = character.name,
-                    level = character.level,
-                    onClick = { navController
-                        .navigate(CharacterScreen(character.id.toByteArray().toBase64String()))
-                    }
-                )
+            LazyColumn(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxSize()
+            ) {
+                items(characters) { character ->
+                    CharacterListElement(
+                        name = character.name,
+                        level = character.level,
+                        onClick = {
+                            navController
+                                .navigate(
+                                    CharacterScreen(
+                                        character.id.toByteArray().toBase64String()
+                                    )
+                                )
+                        }
+                    )
+                }
             }
         }
     }

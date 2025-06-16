@@ -240,7 +240,7 @@ private fun StatText(name: String, value: Int, fontSize: TextUnit) {
             color = Color(0xFFD6BFA1),
             lineHeight = fontSize * 1.1f, // Slightly more line height for readability
             maxLines = 1, // Ensure it doesn't wrap
-            overflow = TextOverflow.Visible, // Or Ellipsis if you prefer for extreme cases
+            overflow = TextOverflow.Ellipsis, // Or Ellipsis if you prefer for extreme cases
             // Note: With proper sizing, Visible should be fine.
             modifier = Modifier.fillMaxWidth() // Allow text to use available width
         )

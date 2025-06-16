@@ -3,10 +3,17 @@ package com.ciscodeto.sinapsia.domain.actions
 import com.ciscodeto.sinapsia.domain.attributes.AttributeType
 import com.ciscodeto.sinapsia.domain.attributes.Attributes
 import com.ciscodeto.sinapsia.domain.character.Character
+import com.ciscodeto.sinapsia.domain.shared.Identifier
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
-interface Action {
+interface Action{
+    @OptIn(ExperimentalUuidApi::class)
+    val id: Identifier<Uuid>
     val name: String
-    val cost: Int
+    val healthCost: Int
+    val energyCost: Int
+    val goldCost: Int
     val requiresTarget: Boolean
     val requiresReaction: Boolean
     /**
@@ -18,5 +25,5 @@ interface Action {
      */
     val effectAttributes: List<AttributeType>
 
-    fun execute(attributes: Attributes, target: Character): ActionResult
+    fun execute(attributes: Attributes, target: Character?): ActionResult
 }
