@@ -1,6 +1,5 @@
-package com.ciscodeto.sinapsia.domain.actions
+package com.ciscodeto.sinapsia.domain.actions.effects
 
-import com.ciscodeto.sinapsia.domain.attributes.Attributes
 import com.ciscodeto.sinapsia.domain.character.Character
 
 sealed interface Effect {
@@ -39,10 +38,10 @@ sealed interface Effect {
         }
     }
 
-    data class Gold(val attributes: Attributes): Effect {
+    data class Gold(val gold: Int): Effect {
         override fun apply(target: Character) : String {
-            target.attributes += attributes
-            return "Gained $attributes"
+            target.gold += gold
+            return "Gained $gold gold"
         }
     }
 

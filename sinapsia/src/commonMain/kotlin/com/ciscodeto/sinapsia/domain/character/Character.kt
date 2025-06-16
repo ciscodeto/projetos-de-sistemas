@@ -2,6 +2,7 @@ package com.ciscodeto.sinapsia.domain.character
 
 import com.ciscodeto.sinapsia.domain.actions.Action
 import com.ciscodeto.sinapsia.domain.actions.ActionResult
+import com.ciscodeto.sinapsia.domain.actions.effects.Effect
 import com.ciscodeto.sinapsia.domain.attributes.Attributes
 import com.ciscodeto.sinapsia.domain.item.Item
 import com.ciscodeto.sinapsia.domain.shared.Entity
@@ -77,15 +78,67 @@ class Character(
         require(notification.hasNoErrors()) { notification.message() }
     }
 
-    fun executeAction(action: Action, target: Character) : ActionResult {
-        return action.execute(attributes, target)
+    fun executeAction(action: Action, target: Character?): ActionResult {
+        if (this.currentHealth <= action.healthCost) {
+            return ActionResult(
+                success = false,
+                finalValue = 0,
+                message = "${this.name} não tem vida suficiente para usar ${action.name}.",
+                effects = listOf(Effect.Miss),
+            )
+        }
+        if (this.currentEnergy < action.energyCost) {
+            return ActionResult(
+                success = false,
+                finalValue = 0,
+                message = "${this.name} não tem energia suficiente para usar ${action.name}.",
+                effects = listOf(Effect.Miss)
+            )
+        }
+        if (this.gold < action.goldCost) {
+            return ActionResult(
+                success = false,
+                finalValue = 0,
+                message = "${this.name} não tem ouro suficiente para usar ${action.name}.",
+                effects = listOf(Effect.Miss)
+            )
+        }
+
+        this.currentHealth -= action.healthCost
+        this.currentEnergy -= action.energyCost
+        this.gold -= action.goldCost
+
+        val actionResult = action.execute(this.attributes, target)
+
+        if (!actionResult.success) {
+            val refundPercentage = 0.5
+
+            val healthRefund = (action.healthCost * refundPercentage).toInt()
+            val energyRefund = (action.energyCost * refundPercentage).toInt()
+            val goldRefund = (action.goldCost * refundPercentage).toInt()
+
+            this.currentHealth += healthRefund
+
+            if (this.currentHealth > this.maxHealth) {
+                this.currentHealth = this.maxHealth
+            }
+
+            this.currentEnergy += energyRefund
+
+            if (this.currentEnergy > this.maxEnergy) {
+                this.currentEnergy = this.maxEnergy
+            }
+
+            this.gold += goldRefund
+        }
+        return actionResult
     }
 
     fun levelUp() {
         levelUp(1)
     }
 
-    fun levelUp(level: Int) {
+    private fun levelUp(level: Int) {
         this.level += level
         attributePoints = remainingAttributePoints(attributes, level)
     }
