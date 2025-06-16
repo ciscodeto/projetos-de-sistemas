@@ -40,6 +40,19 @@ data class Attributes(
                 charisma >= previous.charisma
     }
 
+    fun get(type: AttributeType): Int {
+        return when (type) {
+            AttributeType.VITALITY -> vitality
+            AttributeType.ENERGY -> energy
+            AttributeType.STRENGTH -> strength
+            AttributeType.ENDURANCE -> endurance
+            AttributeType.DEXTERITY -> dexterity
+            AttributeType.INTELLIGENCE -> intelligence
+            AttributeType.WISDOM -> wisdom
+            AttributeType.CHARISMA -> charisma
+        }
+    }
+
     operator fun plus(other: Attributes): Attributes = Attributes(
         vitality + other.vitality,
         energy + other.energy,
