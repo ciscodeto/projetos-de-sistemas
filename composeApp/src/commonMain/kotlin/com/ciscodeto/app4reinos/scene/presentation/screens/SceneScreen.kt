@@ -1,12 +1,6 @@
 package com.ciscodeto.app4reinos.scene.presentation.screens
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,21 +19,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ciscodeto.app4reinos.core.components.bar.ReinosAppBar
 import com.ciscodeto.app4reinos.core.components.layout.ReinosScaffold
+import com.ciscodeto.app4reinos.core.components.list.TopBorderListContainer
 import com.ciscodeto.app4reinos.scene.domain.ActionUi
 import com.ciscodeto.app4reinos.scene.domain.CharacterUi
 import com.ciscodeto.app4reinos.scene.presentation.components.cards.ActionSlot
 import com.ciscodeto.app4reinos.scene.presentation.components.cards.CharacterSlot
 import com.ciscodeto.app4reinos.scene.presentation.components.cards.EmptySlot
-import com.ciscodeto.app4reinos.scene.presentation.viewmodels.BottomSheetMode
+import com.ciscodeto.app4reinos.scene.presentation.enums.BottomSheetMode
 import com.ciscodeto.app4reinos.scene.presentation.viewmodels.SceneViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.uuid.ExperimentalUuidApi
@@ -53,9 +46,9 @@ fun SceneScreen(
 ) {
     val viewModel = koinViewModel<SceneViewModel>()
     val actor by remember { derivedStateOf { viewModel.actor } }
-    val action by remember { derivedStateOf { viewModel.action } } // ActionUi?
-    val target by remember { derivedStateOf { viewModel.target } } // CharacterUi?
-    val reaction by remember { derivedStateOf { viewModel.reaction } } // ActionUi?
+    val action by remember { derivedStateOf { viewModel.action } }
+    val target by remember { derivedStateOf { viewModel.target } }
+    val reaction by remember { derivedStateOf { viewModel.reaction } }
 
     val bottomSheetMode by remember { derivedStateOf { viewModel.bottomSheetMode } }
     val selectableCharacters by viewModel.selectableCharacters.collectAsState()
@@ -77,7 +70,8 @@ fun SceneScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
+                .padding(horizontal = 16.dp)
+                .padding(top = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -116,8 +110,8 @@ fun SceneScreen(
                     .weight(.5f),
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
             ) {
-                CharacterSlot( // Slot do Alvo
-                    actor = target, // Usando CharacterUi para o alvo
+                CharacterSlot(
+                    actor = target,
                     onSelectCharacter = { viewModel.initiateTargetSelection() },
                     onRemoveCharacter = { viewModel.removeTarget() },
                     enabled = isActionSelected && (action?.requiresTarget == true),
@@ -130,7 +124,7 @@ fun SceneScreen(
                         .weight(1f, false),
                     onClick = {  }
                 )
-                ActionSlot( // Slot da Ação
+                ActionSlot(
                     action = reaction,
                     onSelect = { viewModel.initiateReactionSelection() },
                     onRemove = { viewModel.removeReaction() },
@@ -142,43 +136,39 @@ fun SceneScreen(
                 .weight(1f)
                 .fillMaxWidth()
             ) {
-                AnimatedContent(
-                    targetState = bottomSheetMode,
-                    transitionSpec = {
-                        (slideInVertically(initialOffsetY = { it }) + fadeIn())
-                            .togetherWith(fadeOut(animationSpec = tween(150)))
-                    },
-                    label = "BottomSheetContentAnimation"
-                ) { mode ->
-                    when (mode) {
-                        BottomSheetMode.LOG -> {
-                            // TODO: Implementar o Log da Cena aqui
-                            Column(
-                                modifier = Modifier.fillMaxSize().padding(8.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
+                when (bottomSheetMode) {
+                    BottomSheetMode.LOG -> {
+                        Column(
+                            modifier = Modifier.fillMaxSize().padding(8.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                "Log da Cena aparecerá aqui.",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                    }
+
+                    BottomSheetMode.CHARACTER_SELECTION -> {
+                        if (selectableCharacters.isEmpty()) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    "Log da Cena aparecerá aqui.",
-                                    style = MaterialTheme.typography.titleMedium
+                                    "Nenhum personagem para selecionar ou carregando...",
+                                    style = MaterialTheme.typography.bodyLarge
                                 )
-                                // Futuramente, um LazyColumn com os eventos do log
                             }
-                        }
-
-                        BottomSheetMode.CHARACTER_SELECTION -> {
-                            if (selectableCharacters.isEmpty()) {
-                                Box(
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        "Nenhum personagem para selecionar ou carregando...",
-                                        style = MaterialTheme.typography.bodyLarge
-                                    )
-                                }
-                            } else {
-                                LazyColumn(
+                        } else {
+                            TopBorderListContainer(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = 20.dp)
+                                    .padding(top = 8.dp)
+                            ) {
+                            LazyColumn(
                                     modifier = Modifier.fillMaxSize()
                                 ) {
                                     items(selectableCharacters) { character ->
@@ -192,53 +182,86 @@ fun SceneScreen(
                                 }
                             }
                         }
+                    }
 
-                        BottomSheetMode.ACTION_SELECTION -> {
-                            if (selectableActions.isEmpty()) {
-                                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                    Text("Nenhuma ação disponível ou carregando...", style = MaterialTheme.typography.bodyLarge)
-                                }
-                            } else {
+                    BottomSheetMode.ACTION_SELECTION -> {
+                        if (selectableActions.isEmpty()) {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Text("Nenhuma ação disponível ou carregando...", style = MaterialTheme.typography.bodyLarge)
+                            }
+                        } else {
+                            TopBorderListContainer(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = 20.dp)
+                                    .padding(top = 8.dp)
+                            ) {
                                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                                    items(selectableActions, key = { it.id.toString() }) { actionItem ->
+                                    items(
+                                        selectableActions,
+                                        key = { it.id.toString() }) { actionItem ->
                                         ActionSelectItem(
                                             actionUi = actionItem,
-                                            onClick = { viewModel.confirmActionSelection(actionItem) }
+                                            onClick = {
+                                                viewModel.confirmActionSelection(
+                                                    actionItem
+                                                )
+                                            }
                                         )
                                     }
                                 }
                             }
                         }
+                    }
 
-                        BottomSheetMode.REACTION_SELECTION -> {
-                            if (selectableActions.isEmpty()) {
-                                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                    Text("Nenhuma ação disponível ou carregando...", style = MaterialTheme.typography.bodyLarge)
-                                }
-                            } else {
+                    BottomSheetMode.REACTION_SELECTION -> {
+                        if (selectableActions.isEmpty()) {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Text("Nenhuma ação disponível ou carregando...", style = MaterialTheme.typography.bodyLarge)
+                            }
+                        } else {
+                            TopBorderListContainer(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = 20.dp)
+                                    .padding(top = 8.dp)
+                            ) {
                                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                                    items(selectableActions, key = { it.id.toString() }) { actionItem ->
+                                    items(
+                                        selectableActions,
+                                        key = { it.id.toString() }) { actionItem ->
                                         ActionSelectItem(
                                             actionUi = actionItem,
-                                            onClick = { viewModel.confirmReactionSelection(actionItem) }
+                                            onClick = {
+                                                viewModel.confirmReactionSelection(
+                                                    actionItem
+                                                )
+                                            }
                                         )
                                     }
                                 }
                             }
                         }
+                    }
 
-                        BottomSheetMode.TARGET_SELECTION -> {
-                            if (selectableCharacters.isEmpty()) {
-                                Box(
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        "Nenhum personagem para selecionar ou carregando...",
-                                        style = MaterialTheme.typography.bodyLarge
-                                    )
-                                }
-                            } else {
+                    BottomSheetMode.TARGET_SELECTION -> {
+                        if (selectableCharacters.isEmpty()) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    "Nenhum personagem para selecionar ou carregando...",
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                        } else {
+                            TopBorderListContainer(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(horizontal = 20.dp)
+                                    .padding(top = 8.dp)
+                            ) {
                                 LazyColumn(
                                     modifier = Modifier.fillMaxSize()
                                 ) {
@@ -262,7 +285,7 @@ fun SceneScreen(
 
 @Composable
 fun CharacterSelectItem(
-    character: CharacterUi, // Assegure que é com.ciscodeto.app4reinos.scene.domain.CharacterUi
+    character: CharacterUi,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -274,7 +297,7 @@ fun CharacterSelectItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = character.name, style = MaterialTheme.typography.titleMedium)
+            Text(text = character.name, style = MaterialTheme.typography.bodyMedium)
             Text(text = "Lvl: ${character.level}", style = MaterialTheme.typography.bodyMedium)
         }
         HorizontalDivider()
@@ -294,7 +317,7 @@ fun ActionSelectItem(
                 .padding(vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(text = actionUi.name, style = MaterialTheme.typography.titleMedium)
+            Text(text = actionUi.name, style = MaterialTheme.typography.bodyMedium)
         }
         HorizontalDivider()
     }

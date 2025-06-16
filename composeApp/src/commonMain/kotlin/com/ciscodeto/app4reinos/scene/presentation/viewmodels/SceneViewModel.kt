@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ciscodeto.app4reinos.scene.domain.ActionUi
 import com.ciscodeto.app4reinos.scene.domain.CharacterUi
+import com.ciscodeto.app4reinos.scene.presentation.enums.BottomSheetMode
 import com.ciscodeto.sinapsia.application.character.find.FindAllCharacters
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,18 +18,10 @@ import kotlinx.coroutines.launch
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-enum class BottomSheetMode {
-    LOG,
-    CHARACTER_SELECTION,
-    ACTION_SELECTION,
-    TARGET_SELECTION,
-    REACTION_SELECTION
-}
-
 @OptIn(ExperimentalUuidApi::class)
 class SceneViewModel(
-    private val findAllCharactersUseCase: FindAllCharacters
-    // private val findAllActionsUseCase: FindAllActionsUseCase // Para o futuro
+    private val findAllCharactersUseCase: FindAllCharacters,
+    //private val findAllActionsUseCase: FindAllActionsUseCase
 ) : ViewModel() {
     var actor: CharacterUi? by mutableStateOf(null)
         private set
@@ -39,11 +32,11 @@ class SceneViewModel(
     var reaction: ActionUi? by mutableStateOf(null)
         private set
 
-    var canSelectReaction by mutableStateOf(false) // Habilita o slot de seleção de reação
+    var canSelectReaction by mutableStateOf(false)
         private set
-    var canRollReaction by mutableStateOf(false) // Habilita o botão de rolar reação
+    var canRollReaction by mutableStateOf(false)
         private set
-    var gameLog by mutableStateOf(listOf<String>()) // Log simples de eventos
+    var gameLog by mutableStateOf(listOf<String>())
         private set
 
     private val _selectableCharacters = MutableStateFlow<List<CharacterUi>>(emptyList())
@@ -111,17 +104,17 @@ class SceneViewModel(
     }
 
     fun initiateActionSelection() {
-        if (actor == null) return // Não pode selecionar ação sem um ator
+        if (actor == null) return
         bottomSheetMode = BottomSheetMode.ACTION_SELECTION
-        if (_selectableActions.value.isEmpty()) { // Carrega apenas se a lista estiver vazia
+        if (_selectableActions.value.isEmpty()) {
             loadSelectableActions()
         }
     }
 
     fun initiateReactionSelection() {
-        if (actor == null) return // Não pode selecionar ação sem um ator
+        if (actor == null) return
         bottomSheetMode = BottomSheetMode.REACTION_SELECTION
-        if (_selectableActions.value.isEmpty()) { // Carrega apenas se a lista estiver vazia
+        if (_selectableActions.value.isEmpty()) {
             loadSelectableActions()
         }
     }
@@ -147,12 +140,12 @@ class SceneViewModel(
     fun confirmActionSelection(selectedAction: ActionUi) {
         if (action != selectedAction) {
             action = selectedAction
-            target = null // Limpa o alvo se a ação mudar
+            target = null
         }
         bottomSheetMode = BottomSheetMode.LOG
-        // Se a ação não requer alvo, você pode querer pular a seleção de alvo
+
         if (!selectedAction.requiresTarget) {
-            // TODO: Avançar para a rolagem ou outro passo
+
         }
     }
 
@@ -166,13 +159,13 @@ class SceneViewModel(
 
     fun removeAction() {
         action = null
-        target = null // Limpa o alvo se a ação for removida
-        bottomSheetMode = BottomSheetMode.LOG // Ou pode voltar para ACTION_SELECTION se o ator ainda estiver lá
+        target = null
+        bottomSheetMode = BottomSheetMode.LOG
     }
 
     fun removeReaction() {
         reaction = null
-        bottomSheetMode = BottomSheetMode.LOG // Ou pode voltar para ACTION_SELECTION se o ator ainda estiver lá
+        bottomSheetMode = BottomSheetMode.LOG
     }
 
     fun initiateTargetSelection() {
