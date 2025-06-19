@@ -8,7 +8,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
-class ActionRepositoryImpl(private val dao: ActionDao) : ActionRepository {
+class ActionRepositoryRoomImpl(private val dao: ActionDao) : ActionRepository {
     override suspend fun saveAction(action: ActionDto): ActionDto {
         val entity = action.toEntity()
         dao.insert(entity)

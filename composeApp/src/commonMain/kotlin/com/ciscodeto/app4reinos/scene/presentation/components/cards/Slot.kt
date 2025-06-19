@@ -13,15 +13,15 @@ import androidx.compose.ui.Modifier
 @Composable
 fun <T : Any> Slot(
     entity: T?,
-    card: @Composable (innerEntity: T) -> Unit, // Lambda agora recebe a entidade não-nula
+    card: @Composable (innerEntity: T) -> Unit,
     slotName: String = "Slot",
     onSelect: () -> Unit,
-    enabled: Boolean = true, // Controla a clicabilidade do EmptySlot
+    enabled: Boolean = true,
     modifier: Modifier = Modifier,
     labelAnimation: String = "SlotAnimation"
 ) {
     AnimatedContent(
-        targetState = entity,
+        targetState = entity != null,
         transitionSpec = {
             (
                 slideInVertically(
@@ -35,10 +35,10 @@ fun <T : Any> Slot(
             )
         },
         modifier = modifier,
-        label = labelAnimation // Usando o parâmetro para o label da animação
-    ) { currentEntityState -> // currentEntityState é o T? do targetState
-        if (currentEntityState != null) {
-            card(currentEntityState) // Passa a entidade não-nula para a lambda card
+        label = labelAnimation
+    ) { currentEntityState ->
+        if (entity != null && currentEntityState) {
+            card(entity)
         } else {
             EmptySlot(
                 text = slotName,

@@ -1,12 +1,5 @@
 package com.ciscodeto.app4reinos.scene.presentation.components.cards
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.ciscodeto.app4reinos.scene.domain.CharacterUi

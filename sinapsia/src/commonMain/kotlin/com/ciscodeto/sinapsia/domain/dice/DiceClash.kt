@@ -1,8 +1,10 @@
 package com.ciscodeto.sinapsia.domain.dice
 
+import com.ciscodeto.sinapsia.application.character.update.UpdateCharacter
 import com.ciscodeto.sinapsia.domain.actions.Action
 import com.ciscodeto.sinapsia.domain.actions.ActionResult
 import com.ciscodeto.sinapsia.domain.character.Character
+import kotlin.uuid.ExperimentalUuidApi
 
 /**
  * Gerencia o confronto entre uma ação inicial do ator e uma possível reação do alvo.
@@ -11,7 +13,8 @@ import com.ciscodeto.sinapsia.domain.character.Character
 class DiceClash(
     private val actor: Character,
     private val initialAction: Action,
-    private val target: Character?
+    private val target: Character?,
+    private val updateCharacter: UpdateCharacter
 ) {
     private lateinit var actorActionResult: ActionResult
     private var chosenCounterAction: Action? = null
@@ -114,7 +117,8 @@ class DiceClash(
         )
     }
 
-    fun applyResolvedEffects(outcome: ClashOutcome): List<String> {
+    @OptIn(ExperimentalUuidApi::class)
+    suspend fun applyResolvedEffects(outcome: ClashOutcome): List<String> {
         val logMessages = mutableListOf<String>()
         logMessages.add(outcome.finalMessage)
 
@@ -127,6 +131,18 @@ class DiceClash(
                     logMessages.add("${characterToAffect.name}: $effectMessage")
                 }
             }
+            updateCharacter.update(UpdateCharacter.RequestModel(
+                id = characterToAffect.id.value(),
+                name = characterToAffect.name,
+                currentHealth = characterToAffect.currentHealth,
+                currentEnergy = characterToAffect.currentEnergy,
+                gold = characterToAffect.gold,
+                attributes = characterToAffect.attributes,
+                description = "",
+                age = 0,
+                level = characterToAffect.level,
+                experience = characterToAffect.experience,
+            ))
         }
         return logMessages
     }

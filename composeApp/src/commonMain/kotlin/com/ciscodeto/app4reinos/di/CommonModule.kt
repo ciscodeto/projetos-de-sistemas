@@ -1,9 +1,13 @@
 package com.ciscodeto.app4reinos.di
 
-import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharactersListViewModel
 import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharacterViewModel
+import com.ciscodeto.app4reinos.character.presentation.viewmodels.CharactersListViewModel
 import com.ciscodeto.app4reinos.scene.presentation.viewmodels.SceneListViewModel
 import com.ciscodeto.app4reinos.scene.presentation.viewmodels.SceneViewModel
+import com.ciscodeto.sinapsia.application.action.find.FindAction
+import com.ciscodeto.sinapsia.application.action.find.FindActionImpl
+import com.ciscodeto.sinapsia.application.action.find.FindAllActions
+import com.ciscodeto.sinapsia.application.action.find.FindAllActionsImpl
 import com.ciscodeto.sinapsia.application.character.create.CharacterCreationService
 import com.ciscodeto.sinapsia.application.character.create.CharacterCreationServiceImpl
 import com.ciscodeto.sinapsia.application.character.create.CreateCharacter
@@ -16,6 +20,8 @@ import com.ciscodeto.sinapsia.application.character.find.FindCharacter
 import com.ciscodeto.sinapsia.application.character.find.FindCharacterImpl
 import com.ciscodeto.sinapsia.application.character.update.UpdateCharacter
 import com.ciscodeto.sinapsia.application.character.update.UpdateCharacterImpl
+import com.ciscodeto.sinapsia.application.dice.ClashService
+import com.ciscodeto.sinapsia.application.dice.ClashServiceImpl
 import com.ciscodeto.sinapsia.application.item.create.CreateItem
 import com.ciscodeto.sinapsia.application.item.create.CreateItemImpl
 import com.ciscodeto.sinapsia.application.item.find.FindAllItems
@@ -49,6 +55,15 @@ val characterServices = module {
     }
 }
 
+val actionServices = module {
+    single <FindAllActions> {
+        FindAllActionsImpl(get())
+    }
+    single <FindAction> {
+        FindActionImpl(get())
+    }
+}
+
 val itemServices = module {
     single <FindAllItems> {
         FindAllItemsImpl(get())
@@ -65,7 +80,9 @@ val itemServices = module {
 }
 
 val sceneServices = module {
-
+    single <ClashService> {
+        ClashServiceImpl(get(), get(), get())
+    }
 }
 
 val viewModelModule = module {
@@ -80,8 +97,15 @@ val viewModelModule = module {
         SceneListViewModel()
     }
     viewModel {
-        SceneViewModel(get())
+        SceneViewModel(get(), get(), get(), get())
     }
 }
 
-fun appModules() = listOf(sinapsiaModule, characterServices, itemServices, viewModelModule)
+fun appModules() = listOf(
+    sinapsiaModule,
+    characterServices,
+    itemServices,
+    actionServices,
+    sceneServices,
+    viewModelModule
+)

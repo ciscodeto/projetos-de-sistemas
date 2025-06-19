@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
 import com.ciscodeto.sinapsia.infrastructure.action.ActionCounterCrossRef
+import com.ciscodeto.sinapsia.infrastructure.action.ActionDao
 import com.ciscodeto.sinapsia.infrastructure.action.ActionEntity
 import com.ciscodeto.sinapsia.infrastructure.character.CharacterDao
 import com.ciscodeto.sinapsia.infrastructure.character.CharacterEntity
@@ -27,6 +28,7 @@ import com.ciscodeto.sinapsia.infrastructure.item.ItemEntity
 abstract class SinapsiaDatabase : RoomDatabase() {
     abstract fun characterDao(): CharacterDao
     abstract fun itemDao(): ItemDao
+    abstract fun actionDao(): ActionDao
 }
 
 @Suppress("NO_ACTUAL_FOR_EXPECT")

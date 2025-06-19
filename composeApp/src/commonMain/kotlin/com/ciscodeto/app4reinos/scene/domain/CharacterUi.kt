@@ -1,6 +1,5 @@
 package com.ciscodeto.app4reinos.scene.domain
 
-import androidx.compose.ui.graphics.painter.Painter
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -10,7 +9,9 @@ data class CharacterUi (
     val id: Uuid? = null,
     val name: String = "BARTRAN",
     val level: Int = 0,
-    val health: Int,
-    val energy: Int,
+    val maxHealth: Int,
+    val maxEnergy: Int,
+    var currentHealth: Int,
+    var currentEnergy: Int,
     val stats: Map<String, Int>,
 )

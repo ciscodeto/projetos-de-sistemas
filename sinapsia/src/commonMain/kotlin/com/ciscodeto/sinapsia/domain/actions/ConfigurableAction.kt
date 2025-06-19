@@ -31,10 +31,11 @@ class ConfigurableAction(
         val average = if (successAttributes.isNotEmpty()) attributeSum / successAttributes.size else 0
 
         val finalValue = baseRoll + average
-        val success = finalValue > 12
+        val success = finalValue > 9
 
-        val effectValue = if (effectAttributes.isNotEmpty())
+        val averageEffect = if (effectAttributes.isNotEmpty())
             effectAttributes.sumOf { attributes.get(it) } / effectAttributes.size else 0
+        val effectValue = baseRoll + averageEffect
 
         val effects = if (success) {
             effectsOnSuccess.map { effectType ->

@@ -4,6 +4,7 @@ import com.ciscodeto.sinapsia.application.action.find.FindAction
 import com.ciscodeto.sinapsia.application.action.repository.toDomain
 import com.ciscodeto.sinapsia.application.character.find.FindCharacter
 import com.ciscodeto.sinapsia.application.character.repository.toDomain
+import com.ciscodeto.sinapsia.application.character.update.UpdateCharacter
 import com.ciscodeto.sinapsia.domain.actions.ActionResult
 import com.ciscodeto.sinapsia.domain.dice.DiceClash
 import kotlin.uuid.ExperimentalUuidApi
@@ -13,6 +14,7 @@ import kotlin.uuid.Uuid
 class ClashServiceImpl(
     private val findCharacter: FindCharacter,
     private val findAction: FindAction,
+    private val updateCharacter: UpdateCharacter,
 ) : ClashService {
     private lateinit var diceClash: DiceClash
 
@@ -32,15 +34,16 @@ class ClashServiceImpl(
 
         val target = if (targetId != null) findCharacter.findById(targetId)?.toDomain() else null
 
-        diceClash = DiceClash(actor, action, target)
+        diceClash = DiceClash(actor, action, target, updateCharacter)
 
         return diceClash.executeInitialAction()
     }
 
     override suspend fun executeReaction(reactionId: Uuid): List<String>? {
         val reaction = findAction.findById(reactionId)?.toDomain(emptyList()) ?: return null
-        diceClash.executeCounterAction(reaction)
+        val reactionResult = diceClash.executeCounterAction(reaction)
+        val clashResult = diceClash.applyResolvedEffects(diceClash.resolveClash())
 
-        return diceClash.applyResolvedEffects(diceClash.resolveClash())
+        return listOfNotNull(reactionResult?.message) + clashResult
     }
 }

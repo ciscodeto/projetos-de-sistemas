@@ -35,4 +35,7 @@ interface ActionDao {
 
     @Query("DELETE FROM action_counter_cross_ref WHERE actionId = :actionId")
     suspend fun deleteCounterRefsByActionId(actionId: ByteArray)
+
+    @Query("DELETE FROM actions")
+    suspend fun deleteAll()
 }
