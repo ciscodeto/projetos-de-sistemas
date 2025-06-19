@@ -18,6 +18,7 @@ import com.ciscodeto.sinapsia.application.character.find.FindAllCharacters
 import com.ciscodeto.sinapsia.application.dice.ClashService
 import com.ciscodeto.sinapsia.domain.actions.ActionResult
 import com.ciscodeto.sinapsia.domain.actions.implementations.seedBaseActionsIfEmpty
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -115,18 +116,14 @@ class SceneViewModel(
 
     fun confirmActorSelection(selectedCharacter: CharacterUi) {
         if (actor != selectedCharacter) {
+            resetTurnState(keepActor = false)
             actor = selectedCharacter
-            action = null
-            target = null
-            reaction = null
         }
         bottomSheetMode = BottomSheetMode.LOG
     }
 
     fun removeActor() {
-        actor = null
-        action = null
-        target = null
+        resetTurnState(keepActor = false)
         bottomSheetMode = BottomSheetMode.LOG
     }
 
@@ -249,6 +246,8 @@ class SceneViewModel(
 
             refreshActor()
             refreshTarget()
+            delay(1000)
+            resetTurnState(keepActor = true)
         }
     }
 
@@ -280,5 +279,17 @@ class SceneViewModel(
                 actor = newActor
             }
         }
+    }
+
+    private fun resetTurnState(keepActor: Boolean) {
+        if (!keepActor) {
+            actor = null
+        }
+        action = null
+        target = null
+        reaction = null
+        canSelectReaction = false
+        actionResult = null
+        clashResult = null
     }
 }

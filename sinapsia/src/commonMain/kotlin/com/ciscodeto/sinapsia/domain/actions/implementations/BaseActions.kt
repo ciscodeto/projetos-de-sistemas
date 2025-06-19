@@ -18,17 +18,17 @@ fun baseActions(): List<ConfigurableAction> {
     val tiroCerteiroId = ActionId()
     val bolaDeFogoId = ActionId()
 
-    val aparar = ConfigurableAction(
+    val descansar = ConfigurableAction(
         id = apararId,
-        name = "Aparar",
+        name = "Descansar",
         healthCost = 0,
-        energyCost = 10,
+        energyCost = 0,
         goldCost = 0,
         requiresTarget = false,
         requiresReaction = false,
-        successAttributes = listOf(AttributeType.STRENGTH, AttributeType.DEXTERITY),
-        effectAttributes = listOf(AttributeType.STRENGTH),
-        effectsOnSuccess = listOf(EffectType.MISS),
+        successAttributes = listOf(),
+        effectAttributes = AttributeType.entries,
+        effectsOnSuccess = listOf(EffectType.ENERGY),
         counterActions = emptyList()
     )
 
@@ -71,7 +71,7 @@ fun baseActions(): List<ConfigurableAction> {
         successAttributes = listOf(AttributeType.STRENGTH),
         effectAttributes = listOf(AttributeType.STRENGTH),
         effectsOnSuccess = listOf(EffectType.DAMAGE),
-        counterActions = listOf(aparar, esquivar)
+        counterActions = listOf(esquivar)
     )
 
     val tiroCerteiro = ConfigurableAction(
@@ -88,6 +88,34 @@ fun baseActions(): List<ConfigurableAction> {
         counterActions = listOf(esquivar)
     )
 
+    val golpeSimples = ConfigurableAction(
+        id = ActionId(),
+        name = "Golpe Simples",
+        healthCost = 0,
+        energyCost = 8,
+        goldCost = 0,
+        requiresTarget = true,
+        requiresReaction = false,
+        successAttributes = listOf(AttributeType.STRENGTH),
+        effectAttributes = listOf(AttributeType.STRENGTH),
+        effectsOnSuccess = listOf(EffectType.DAMAGE),
+        counterActions = emptyList()
+    )
+
+    val disparoRapido = ConfigurableAction(
+        id = ActionId(),
+        name = "Disparo Rápido",
+        healthCost = 0,
+        energyCost = 10,
+        goldCost = 0,
+        requiresTarget = true,
+        requiresReaction = false,
+        successAttributes = listOf(AttributeType.DEXTERITY),
+        effectAttributes = listOf(AttributeType.DEXTERITY),
+        effectsOnSuccess = listOf(EffectType.DAMAGE),
+        counterActions = emptyList()
+    )
+
     val bolaDeFogo = ConfigurableAction(
         id = bolaDeFogoId,
         name = "Bola de Fogo",
@@ -102,7 +130,16 @@ fun baseActions(): List<ConfigurableAction> {
         counterActions = listOf(esquivar, barreiraMagica)
     )
 
-    return listOf(aparar, esquivar, barreiraMagica, ataquePoderoso, tiroCerteiro, bolaDeFogo)
+    return listOf(
+        descansar,
+        esquivar,
+        barreiraMagica,
+        ataquePoderoso,
+        tiroCerteiro,
+        bolaDeFogo,
+        golpeSimples,
+        disparoRapido
+    )
 }
 
 suspend fun seedBaseActionsIfEmpty(actionRepository: ActionRepository) {

@@ -36,8 +36,8 @@ fun ActionCard(
 ) {
     Box(
         modifier = modifier
-            .fillMaxHeight() // Para manter a altura consistente com outros slots na mesma Row
-            .aspectRatio(.75f) // Proporção similar ao EmptySlot
+            .fillMaxHeight()
+            .aspectRatio(.75f)
             .clip(RoundedCornerShape(4.dp))
             .background(
                 color = backgroundColor,
@@ -53,18 +53,18 @@ fun ActionCard(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(8.dp) // Adiciona um pouco de padding interno
+            modifier = Modifier.padding(8.dp)
         ) {
             Icon(
-                imageVector = Icons.Filled.Bolt, // Ícone genérico para ação
+                imageVector = Icons.Filled.Bolt,
                 contentDescription = "Ação",
                 tint = contentColor,
-                modifier = Modifier.size(36.dp) // Tamanho do ícone
+                modifier = Modifier.size(36.dp)
             )
             Text(
                 text = action.name,
                 color = contentColor,
-                fontSize = 12.sp, // Tamanho de fonte um pouco menor para caber nomes
+                fontSize = 12.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 4.dp)
             )
